@@ -1,9 +1,11 @@
 package hr.unizg.fer.is.boore.boore.Genre;
 
+import hr.unizg.fer.is.boore.boore.Book.Book;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,5 +20,12 @@ public class Genre {
     @Lob
     @Column(name = "naziv", nullable = false)
     private String name;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "knjiga_zanr",
+        joinColumns = {@JoinColumn(referencedColumnName = "id_zanr")},
+        inverseJoinColumns = {@JoinColumn(referencedColumnName = "id_knjiga")}
+    )
+    private Set<Book> books;
 
 }
