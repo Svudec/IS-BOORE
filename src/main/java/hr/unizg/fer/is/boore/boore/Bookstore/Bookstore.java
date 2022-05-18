@@ -1,10 +1,12 @@
 package hr.unizg.fer.is.boore.boore.Bookstore;
 
+import hr.unizg.fer.is.boore.boore.Book.Book;
 import hr.unizg.fer.is.boore.boore.City.City;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -32,4 +34,10 @@ public class Bookstore {
     @Column(name = "url")
     private String url;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "knjiga_knjizara",
+            joinColumns = {@JoinColumn(referencedColumnName = "id_knjizara")},
+            inverseJoinColumns = {@JoinColumn(referencedColumnName = "id_knjiga")}
+    )
+    private Set<Book> books;
 }

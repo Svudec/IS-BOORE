@@ -1,5 +1,6 @@
 package hr.unizg.fer.is.boore.boore.Book;
 
+import hr.unizg.fer.is.boore.boore.Bookstore.Bookstore;
 import hr.unizg.fer.is.boore.boore.Genre.Genre;
 import hr.unizg.fer.is.boore.boore.Language.Language;
 import hr.unizg.fer.is.boore.boore.Person.Person;
@@ -42,4 +43,7 @@ public class Book {
 
     @ManyToMany(mappedBy = "books")
     private Set<Genre> genres;
+
+    @ManyToMany(mappedBy = "books")
+    private Set<Bookstore> soldInBookstores;
 }
