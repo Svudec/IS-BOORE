@@ -23,8 +23,8 @@ public class Genre {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "knjiga_zanr",
-        joinColumns = {@JoinColumn(referencedColumnName = "id_zanr")},
-        inverseJoinColumns = {@JoinColumn(referencedColumnName = "id_knjiga")}
+        joinColumns = {@JoinColumn(name = "id_zanr")},
+        inverseJoinColumns = {@JoinColumn(name = "id_knjiga")}
     )
     private Set<Book> books;
 

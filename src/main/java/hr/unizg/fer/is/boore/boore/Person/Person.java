@@ -56,8 +56,8 @@ public class Person {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(name = "knjiga_pisac",
-            joinColumns = { @JoinColumn(referencedColumnName = "id_osoba")},
-            inverseJoinColumns = {@JoinColumn(referencedColumnName = "id_knjiga")}
+            joinColumns = { @JoinColumn(name = "id_osoba")},
+            inverseJoinColumns = {@JoinColumn(name = "id_knjiga")}
     )
     private Set<Book> booksWritten;
 
