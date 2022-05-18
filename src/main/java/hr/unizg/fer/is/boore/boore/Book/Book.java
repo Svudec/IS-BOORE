@@ -1,10 +1,12 @@
 package hr.unizg.fer.is.boore.boore.Book;
 
 import hr.unizg.fer.is.boore.boore.Language.Language;
+import hr.unizg.fer.is.boore.boore.Person.Person;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -33,5 +35,8 @@ public class Book {
 
     @Column(name = "ocjena")
     private Double rating;
+
+    @ManyToMany(mappedBy = "booksWritten")
+    private Set<Person> authors;
 
 }

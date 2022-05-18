@@ -1,11 +1,13 @@
 package hr.unizg.fer.is.boore.boore.Person;
 
+import hr.unizg.fer.is.boore.boore.Book.Book;
 import hr.unizg.fer.is.boore.boore.City.City;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -51,5 +53,11 @@ public class Person {
     @Lob
     @Column(name = "biografija")
     private String biography;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinTable(name = "knjiga_pisac",
+            joinColumns = { @JoinColumn(referencedColumnName = "id_osoba")},
+            inverseJoinColumns = {@JoinColumn(referencedColumnName = "id_knjiga")})
+    private Set<Book> booksWritten;
 
 }
