@@ -1,8 +1,11 @@
 package hr.unizg.fer.is.boore.boore.Auth.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class RegistrationDTO {
     private String firstName;
     private String lastname;
@@ -10,7 +13,6 @@ public class RegistrationDTO {
     private String username;
     private String password;
     private String email;
-    private String about;
     private String biography;
     private Integer cityId;
 }

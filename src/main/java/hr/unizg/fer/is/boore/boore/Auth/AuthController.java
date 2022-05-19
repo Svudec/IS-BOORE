@@ -1,5 +1,6 @@
 package hr.unizg.fer.is.boore.boore.Auth;
 
+import hr.unizg.fer.is.boore.boore.Auth.dto.JwtAuthenticationResponse;
 import hr.unizg.fer.is.boore.boore.Auth.dto.LoginDTO;
 import hr.unizg.fer.is.boore.boore.Auth.dto.RegistrationDTO;
 import lombok.AllArgsConstructor;
@@ -18,12 +19,20 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegistrationDTO registrationDTO) throws ParseException {
-        return ResponseEntity.ok(authService.registerUser(registrationDTO));
+    public ResponseEntity<?> register(@RequestBody RegistrationDTO registrationDTO){
+        try {
+            return ResponseEntity.ok().body(authService.registerUser(registrationDTO));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) throws ParseException {
-        return ResponseEntity.ok(authService.loginUser(loginDTO.getUsername(), loginDTO.getPassword()));
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO){
+        try {
+            return ResponseEntity.ok().body(authService.loginUser(loginDTO.getUsername(), loginDTO.getPassword()));
+        } catch (IllegalArgumentException e) {
+            return (ResponseEntity<?>) ResponseEntity.badRequest();
+        }
     }
 }
