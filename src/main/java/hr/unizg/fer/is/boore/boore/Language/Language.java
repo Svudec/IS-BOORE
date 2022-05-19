@@ -15,7 +15,6 @@ public class Language {
     @Column(name = "id_jezik", nullable = false)
     private Integer id;
 
-    @Lob
     @Column(name = "naziv", nullable = false)
     private String name;
 

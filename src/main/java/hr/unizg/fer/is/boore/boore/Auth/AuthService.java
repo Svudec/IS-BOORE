@@ -27,7 +27,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
 
-    public JwtAuthenticationResponse loginUser(String username, String password) throws ParseException {
+    public JwtAuthenticationResponse loginUser(String username, String password){
         Person person = personService.getByUsername(username);
 
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -36,7 +36,7 @@ public class AuthService {
         return new JwtAuthenticationResponse(tokenProvider.generateToken(auth), person.getFirstName() + " " + person.getLastName());
     }
 
-    public JwtAuthenticationResponse registerUser(RegistrationDTO dto) throws ParseException {
+    public JwtAuthenticationResponse registerUser(RegistrationDTO dto){
         if (personService.existsByUsername(dto.getUsername())){
             throw new IllegalArgumentException("Username already exists!");
         }

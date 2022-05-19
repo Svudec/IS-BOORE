@@ -22,19 +22,19 @@ public class JwtTokenProvider {
     private String jwtSecret;
 
     @Value("${boore.app.jwtExpirationMs}")
-    private String jwtExpirationMs;
+    private long jwtExpirationMs;
 
-    public String generateToken(Authentication authentication) throws ParseException {
+    public String generateToken(Authentication authentication) {
 
         User userPrincipal = (User) authentication.getPrincipal();
 
-        Date now = new Date();
+        long now = System.currentTimeMillis();
         return Jwts.builder()
                 .setSubject(userPrincipal.getUsername())
                 .claim("authorities", authentication.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
-                .setIssuedAt(now)
-                .setExpiration(DateFormat.getDateInstance().parse(now.getTime() + jwtExpirationMs))
+                .setIssuedAt(new Date(now))
+                .setExpiration(new Date(now + jwtExpirationMs))
                 .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8)),  SignatureAlgorithm.HS512)
                 .compact();
     }

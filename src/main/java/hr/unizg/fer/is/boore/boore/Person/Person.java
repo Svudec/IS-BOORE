@@ -27,30 +27,24 @@ public class Person {
     @Column(name = "je_korisnik", nullable = false)
     private Boolean isUser = false;
 
-    @Lob
     @Column(name = "ime")
     private String firstName;
 
-    @Lob
     @Column(name = "prezime")
     private String lastName;
 
     @Column(name = "godina_rodenja")
     private Integer birthYear;
 
-    @Lob
     @Column(name = "korisnicko_ime")
     private String username;
 
-    @Lob
     @Column(name = "lozinka")
     private String password;
 
-    @Lob
     @Column(name = "email")
     private String email;
 
-    @Lob
     @Column(name = "biografija")
     private String biography;
 

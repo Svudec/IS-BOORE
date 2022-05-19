@@ -24,11 +24,9 @@ public class Book {
     @JoinColumn(name = "id_jezik")
     private Language language;
 
-    @Lob
     @Column(name = "naziv", nullable = false)
     private String title;
 
-    @Lob
     @Column(name = "opis")
     private String description;
 

@@ -20,7 +20,6 @@ public class City {
     @JoinColumn(name = "id_drzava")
     private Country country;
 
-    @Lob
     @Column(name = "naziv", nullable = false)
     private String name;
 

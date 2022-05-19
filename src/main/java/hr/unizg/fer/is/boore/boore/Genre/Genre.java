@@ -17,7 +17,6 @@ public class Genre {
     @Column(name = "id_zanr", nullable = false)
     private Integer id;
 
-    @Lob
     @Column(name = "naziv", nullable = false)
     private String name;
 

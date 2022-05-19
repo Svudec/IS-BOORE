@@ -25,7 +25,6 @@ public class Review {
     @JoinColumn(name = "id_osoba", nullable = false)
     private Person person;
 
-    @Lob
     @Column(name = "tekst")
     private String text;
 

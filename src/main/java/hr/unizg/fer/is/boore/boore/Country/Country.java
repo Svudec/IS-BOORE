@@ -15,7 +15,6 @@ public class Country {
     @Column(name = "id_drzava", nullable = false)
     private Integer id;
 
-    @Lob
     @Column(name = "naziv", nullable = false)
     private String name;
 
