@@ -2,6 +2,7 @@ package hr.unizg.fer.is.boore.boore.User;
 
 import hr.unizg.fer.is.boore.boore.Auth.config.Roles;
 import hr.unizg.fer.is.boore.boore.Person.Person;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,8 +11,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@AllArgsConstructor
+public class User implements UserDetails {
 
-public class User extends Person implements UserDetails {
+    private Integer id;
+    private String username;
+    private String password;
+    private String firstName;
+    private String lastName;
+
+    public static User build(Person person){
+        return new User(person.getId(), person.getUsername(), person.getPassword(), person.getFirstName(), person.getLastName());
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -21,9 +32,19 @@ public class User extends Person implements UserDetails {
         return authorities;
     }
 
+    public Integer getId(){return id;}
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
     @Override
     public String getPassword() {
-        return super.getPassword();
+        return password;
     }
 
     @Override
@@ -48,6 +69,6 @@ public class User extends Person implements UserDetails {
 
     @Override
     public String getUsername() {
-        return super.getUsername();
+        return username;
     }
 }
