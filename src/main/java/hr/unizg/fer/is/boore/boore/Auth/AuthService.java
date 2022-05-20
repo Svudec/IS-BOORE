@@ -44,7 +44,7 @@ public class AuthService {
             throw new IllegalArgumentException("Email already exists!");
         }
 
-        personService.createPerson(dto);
+        personService.createUser(dto);
         return loginUser(dto.getUsername(), dto.getPassword());
     }
 }

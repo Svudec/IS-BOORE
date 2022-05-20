@@ -39,8 +39,9 @@ public class PersonServiceImpl implements PersonService{
 
     @Override
     @Transactional
-    public Person createPerson(RegistrationDTO registrationDTO) {
+    public Person createUser(RegistrationDTO registrationDTO) {
         Person newPerson = mapper.map(registrationDTO, Person.class);
+        newPerson.setId(null);
         newPerson.setIsUser(true);
         newPerson.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
         return personRepository.save(newPerson);

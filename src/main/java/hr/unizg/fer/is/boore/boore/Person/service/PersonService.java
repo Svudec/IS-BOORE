@@ -9,5 +9,5 @@ public interface PersonService {
     Person getByUsername(String username);
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
-    Person createPerson(RegistrationDTO registrationDTO);
+    Person createUser(RegistrationDTO registrationDTO);
 }
