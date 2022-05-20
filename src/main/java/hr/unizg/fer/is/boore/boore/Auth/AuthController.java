@@ -1,6 +1,5 @@
 package hr.unizg.fer.is.boore.boore.Auth;
 
-import hr.unizg.fer.is.boore.boore.Auth.dto.JwtAuthenticationResponse;
 import hr.unizg.fer.is.boore.boore.Auth.dto.LoginDTO;
 import hr.unizg.fer.is.boore.boore.Auth.dto.RegistrationDTO;
 import lombok.AllArgsConstructor;
