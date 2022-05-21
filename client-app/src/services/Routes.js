@@ -1,13 +1,12 @@
 const host = 'http://localhost:8080';
 
-export class Routes{
-    LOGIN = host + '/login';
-    REGISTER = host + '/register';
-    CITY_LOV = host + '/city/lov';
-    GENRE_LOV = host + '/genre/lov';
-    
-    USER_PROFILE = host + '/user';
-    USER_RECOMMENDATIONS = USER_PROFILE + '/recommendations';
-    USER_RECOMMENDATIONS_GENRE = (genreId) => USER_RECOMMENDATIONS + `/${genreId}`;
-}
-export default new Routes();
+
+export const LOGIN = host + '/login';
+export const REGISTER = host + '/register';
+export const CITY_LOV = host + '/city/lov';
+export const GENRE_LOV = host + '/genre/lov';
+
+export const USER_PROFILE = host + '/user';
+export const USER_RECOMMENDATIONS = USER_PROFILE + '/recommendations';
+export const USER_RECOMMENDATIONS_GENRE = (genreId) => USER_RECOMMENDATIONS + `/${genreId}`;
+
