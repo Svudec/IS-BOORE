@@ -10,12 +10,32 @@ function Login() {
         <Grid>
             <Paper elevation={10} style={paperStyle}>
                 <Grid align='center'>
-                    <Avatar style={avatarStyle}><LockOutlinedIcon /></Avatar>
-                    <h2>Sign in</h2>
+                    <Avatar 
+                        style={avatarStyle}>
+                        <LockOutlinedIcon/>
+                    </Avatar>
+                    <h2>
+                        Sign in
+                    </h2>
                 </Grid>
-                <TextField label='Username' placeholder="Enter username" fullWidth required variant="standard" />
-                <TextField label='Password' placeholder="Enter password" type="password" fullWidth required variant="standard" />
-                <Button variant="contained" fullWidth style={btnStyle}>SIGN IN</Button>
+                <TextField
+                    label='Username'
+                    placeholder="Enter username"
+                    fullWidth required
+                    variant="standard"/>
+                <TextField
+                    label='Password'
+                    placeholder="Enter password"
+                    type="password"
+                    fullWidth
+                    required
+                    variant="standard"/>
+                <Button
+                    variant="contained" 
+                    fullWidth 
+                    style={btnStyle}>
+                    SIGN IN
+                </Button>
                 <Typography> 
                     Not a member?&nbsp;
                     <Link>
