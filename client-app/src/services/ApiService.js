@@ -1,5 +1,5 @@
+import axios from "axios";
 import AuthService from "./AuthService";
-
 
 export function authHeader() {
     const user = AuthService.getCurrentUser();
@@ -11,6 +11,16 @@ export function authHeader() {
 }
 
 class UserService {
-    getAPI()
+    getAPI(url){
+        return axios.get(url, {headers: authHeader()});
+    }
+
+    postAPI(url, body){
+        return axios.post(url, body, {headers: authHeader()});
+    }
+
+    putAPI(url, body){
+        return axios.put(url, body, {headers: authHeader()});
+    }
   }
   export default new UserService();

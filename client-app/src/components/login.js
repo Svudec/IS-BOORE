@@ -16,7 +16,7 @@ function Login() {
                 <TextField label='Username' placeholder="Enter username" fullWidth required variant="standard" />
                 <TextField label='Password' placeholder="Enter password" type="password" fullWidth required variant="standard" />
                 <Button variant="contained" fullWidth style={btnStyle}>SIGN IN</Button>
-                <Typography> 
+                <Typography>
                     Not a member?&nbsp;
                     <Link>
                         Sign up

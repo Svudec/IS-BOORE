@@ -1,9 +1,13 @@
+import { Outlet } from "react-router-dom";
 import Login from "./components/login";
 
 function App() {
   return (
     <div className="container">
-      <Login/>
+      {//TODO Tu ide navbar
+      }
+
+      <Outlet />
     </div>
   );
 }
