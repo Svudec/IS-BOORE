@@ -5,6 +5,7 @@ import hr.unizg.fer.is.boore.boore.Book.Book;
 import hr.unizg.fer.is.boore.boore.Book.BookDTO;
 import hr.unizg.fer.is.boore.boore.Genre.Genre;
 import hr.unizg.fer.is.boore.boore.Person.Person;
+import hr.unizg.fer.is.boore.boore.Person.dto.UserProfileDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,4 +26,6 @@ public interface PersonService {
     List<BookDTO> getRecommendations();
 
     List<BookDTO> getRecommendations(Genre genre);
+
+    UserProfileDTO getUserProfile();
 }

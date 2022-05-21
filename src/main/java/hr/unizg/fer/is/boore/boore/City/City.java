@@ -23,4 +23,8 @@ public class City {
     @Column(name = "naziv", nullable = false)
     private String name;
 
+    @Override
+    public String toString() {
+        return name + ", " + country.getName();
+    }
 }

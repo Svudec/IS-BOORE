@@ -21,6 +21,11 @@ public class PersonController {
     private final PersonService personService;
     private final GenreService genreService;
 
+    @GetMapping()
+    public ResponseEntity<?> getUserProfile(){
+        return ResponseEntity.ok(personService.getUserProfile());
+    }
+
     @GetMapping("/recommendations")
     public ResponseEntity<List<BookDTO>> getRecommendations(@RequestParam(required = false) Integer genreId){
         if (genreId != null){

@@ -7,7 +7,9 @@ import hr.unizg.fer.is.boore.boore.Book.service.BookService;
 import hr.unizg.fer.is.boore.boore.Genre.Genre;
 import hr.unizg.fer.is.boore.boore.Person.Person;
 import hr.unizg.fer.is.boore.boore.Person.PersonRepository;
+import hr.unizg.fer.is.boore.boore.Person.dto.UserProfileDTO;
 import hr.unizg.fer.is.boore.boore.User.User;
+import hr.unizg.fer.is.boore.boore.Wishlist.service.WishlistService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +29,7 @@ public class PersonServiceImpl implements PersonService{
     private final ModelMapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final BookService bookService;
+    private final WishlistService wishlistService;
 
     @Override
     @Transactional
@@ -79,5 +82,18 @@ public class PersonServiceImpl implements PersonService{
     public List<BookDTO> getRecommendations(Genre genre) {
         return bookService.getRecommendations(genre, getLoggedInUser()).stream()
                 .map(book -> mapper.map(book, BookDTO.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserProfileDTO getUserProfile() {
+        Person loggedInUser = getLoggedInUser();
+        UserProfileDTO res = mapper.map(loggedInUser, UserProfileDTO.class);
+
+        res.setHasRead(wishlistService.getAllBooksForUser(loggedInUser, true)
+                .stream().map(book -> mapper.map(book, BookDTO.class)).collect(Collectors.toList()));
+
+        res.setWantsToRead(wishlistService.getAllBooksForUser(loggedInUser, false)
+                .stream().map(book -> mapper.map(book, BookDTO.class)).collect(Collectors.toList()));
+        return res;
     }
 }
