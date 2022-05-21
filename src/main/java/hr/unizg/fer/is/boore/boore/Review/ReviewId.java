@@ -33,5 +33,4 @@ public class ReviewId implements Serializable {
     public int hashCode() {
         return Objects.hash(idBook, idPerson);
     }
-
 }
