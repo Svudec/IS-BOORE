@@ -38,7 +38,7 @@ function Login(props) {
                     }}
                     onSubmit={handleLogin}
                 >
-                    {({ submitForm, isSubmitting }) => (
+                    {({ submitForm }) => (
                         <Form>
                             <Field
                                 type="text"

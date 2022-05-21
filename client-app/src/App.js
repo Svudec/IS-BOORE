@@ -25,6 +25,7 @@ function App(props) {
   const navigate = useNavigate();
 
   React.useEffect(() => {
+    console.log(location.pathname)
     if (location?.state?.refreshUser) {
       refreshAuthenticatedUser();
     }
@@ -34,9 +35,9 @@ function App(props) {
 
   const refreshAuthenticatedUser = () => {
     let user = AuthService.getCurrentUser();
-    console.log(user)
+    //console.log(user)
 
-    if (user == null && (location.pathname !== '/login' || location.pathname !== '/register')) {
+    if (user == null && location.pathname !== '/login' && location.pathname !== '/register') {
       navigate('/login', { replace: true })
     }
     setLoggedInUser(user)
@@ -67,7 +68,6 @@ function App(props) {
 
   return (
     <div className="container">
-
       {loggedInUser &&
         <AppBar position="static">
           <Container maxWidth="xl">

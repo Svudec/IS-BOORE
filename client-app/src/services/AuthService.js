@@ -13,8 +13,12 @@ class AuthService {
   logout() {
     localStorage.removeItem("user");
   }
-  register(registerObj) {
-    return axios.post(REGISTER, registerObj);
+  async register(registerObj) {
+    const response = await axios.post(REGISTER, registerObj);
+    if (response.data.accessToken) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+    }
+    return response.data;
   }
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));
