@@ -1,14 +1,9 @@
 import { Button, Grid, Link, Paper, TextField, Typography } from "@mui/material";
-import ApiService from "../services/ApiService";
-import { CITY_LOV } from "../services/Routes";
 
 function Signup() {
     const paperStyle = { padding: 20, width: 280, margin: "20px auto" }
     const btnStyle = { margin: '12px 0' }
 
-    //useEffect sa praznom listom []
-    //ApiService.getAPI(CITY_LOV).then(result => setCities(result))
-    //state cities -> array [{}]
 
     return (
         <Grid>
@@ -18,7 +13,6 @@ function Signup() {
                         Sign up
                     </h2>
                 </Grid>
-                {cities.map(city => <MenuItem key={city.id} value={city.id}>{city.label + ', ' + city.label2}</MenuItem>)}
                 <TextField
                     label='First name'
                     placeholder="Enter first name"
