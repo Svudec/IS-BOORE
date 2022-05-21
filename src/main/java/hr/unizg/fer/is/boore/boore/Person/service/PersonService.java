@@ -1,13 +1,28 @@
 package hr.unizg.fer.is.boore.boore.Person.service;
 
 import hr.unizg.fer.is.boore.boore.Auth.dto.RegistrationDTO;
+import hr.unizg.fer.is.boore.boore.Book.Book;
+import hr.unizg.fer.is.boore.boore.Book.BookDTO;
+import hr.unizg.fer.is.boore.boore.Genre.Genre;
 import hr.unizg.fer.is.boore.boore.Person.Person;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface PersonService {
+    Person getById(int id);
+
+    Person getLoggedInUser();
+
     Person getByUsername(String username);
+
     Boolean existsByUsername(String username);
+
     Boolean existsByEmail(String email);
+
     Person createUser(RegistrationDTO registrationDTO);
+
+    List<BookDTO> getRecommendations();
+
+    List<BookDTO> getRecommendations(Genre genre);
 }

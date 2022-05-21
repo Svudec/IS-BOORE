@@ -21,4 +21,8 @@ public class Language {
     @Column(name = "oznaka", length = 2)
     private String label;
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }
