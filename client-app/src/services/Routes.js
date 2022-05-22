@@ -17,5 +17,7 @@ export const REVIEW = (bookId) => host + `/review${bookId ? '?bookId=' + bookId 
 
 export const BOOK = (bookId) => host + `/book/${bookId}`;
 
+export const BOOK_SEARCH = (searchString) => host + '/book/search?title=' + searchString;
+
 export const AUTHOR = (authorId) => host + `/author/${authorId}`;
 

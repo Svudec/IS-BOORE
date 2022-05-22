@@ -5,7 +5,7 @@ import { BookDetails } from '../components/bookDetails';
 import BookList from '../components/booklist';
 import { GenreSelect } from '../components/genreSelect';
 import ApiService from "../services/ApiService";
-import { USER_RECOMMENDATIONS } from "../services/Routes";
+import { BOOK_SEARCH, USER_RECOMMENDATIONS } from "../services/Routes";
 import SearchIcon from '@mui/icons-material/Search';
 
 const Homepage = () => {
@@ -27,20 +27,32 @@ const Homepage = () => {
     setSelectedBook(books.find(book => book.id === bookId));
   }
 
-  const 
+  const searchForBook = () => {
+    if(searchValue != ''){
+      ApiService.getAPI(BOOK_SEARCH(searchValue)).then(result => {
+        setBooks(result.data);
+        setSelectedBook(null);
+      })
+    }
+  }
 
   const handleSearchBarKeyPress = (e) => {
     if(e.keyCode === 13){
-      console.log("ENTER")
+      searchForBook();
     }
+  }
+
+  const handleGenreChange = (genreId) => {
+    getBooks(genreId);
+    setSearchValue('')
   }
 
   return (
     <div style={{ padding: '20px' }}>
-      <Typography sx={{ mb: 5 }} variant='h4' gutterBottom component="div">Popular Books</Typography>
+      <Typography sx={{ mb: 5 }} variant='h4' gutterBottom component="div">{searchValue != '' ? 'Search Results' : 'Popular Books'}</Typography>
       <Grid container justifyContent={'space-between'}>
         <Grid item xs={2}>
-          <GenreSelect onGenreChange={(genreId) => getBooks(genreId)} fullWidth />
+          <GenreSelect onGenreChange={handleGenreChange} fullWidth />
         </Grid>
         <Grid item xs={2}>
           <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
