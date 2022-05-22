@@ -28,7 +28,7 @@ const Homepage = () => {
   }
 
   const searchForBook = () => {
-    if(searchValue != ''){
+    if(searchValue !== ''){
       ApiService.getAPI(BOOK_SEARCH(searchValue)).then(result => {
         setBooks(result.data);
         setSelectedBook(null);
@@ -44,12 +44,13 @@ const Homepage = () => {
 
   const handleGenreChange = (genreId) => {
     getBooks(genreId);
-    setSearchValue('')
+    setSearchValue('');
+    setSelectedBook(null)
   }
 
   return (
     <div style={{ padding: '20px' }}>
-      <Typography sx={{ mb: 5 }} variant='h4' gutterBottom component="div">{searchValue != '' ? 'Search Results' : 'Popular Books'}</Typography>
+      <Typography sx={{ mb: 5 }} variant='h4' gutterBottom component="div">{searchValue !== '' ? 'Search Results' : 'Popular Books'}</Typography>
       <Grid container justifyContent={'space-between'}>
         <Grid item xs={2}>
           <GenreSelect onGenreChange={handleGenreChange} fullWidth />
