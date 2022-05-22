@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,5 +49,19 @@ public class WishlistServiceImpl implements WishlistService{
         }
         wishlist.setWasRead(wasRead);
         wishlistRepository.save(wishlist);
+    }
+
+    @Override
+    @Transactional
+    public void removeFromWishList(int userId, int bookId) {
+        WishlistId id = new WishlistId();
+        id.setIdPerson(userId);
+        id.setIdBook(bookId);
+
+        if(wishlistRepository.existsById(id)){
+            wishlistRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Book is not on a wishlist!");
+        }
     }
 }
