@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface PersonService {
     Person getById(int id);
 
+    Person getById(String id);
+
     Person getLoggedInUser();
 
     Person getByUsername(String username);

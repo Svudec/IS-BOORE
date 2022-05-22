@@ -40,6 +40,17 @@ public class PersonServiceImpl implements PersonService{
     }
 
     @Override
+    public Person getById(String id) {
+        int personId;
+        try {
+            personId = Integer.parseInt(id);
+        } catch (NumberFormatException e){
+            throw new IllegalArgumentException("Person id is wrong format");
+        }
+        return getById(personId);
+    }
+
+    @Override
     public Person getLoggedInUser() {
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return getById(principal.getId());
