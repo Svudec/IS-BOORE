@@ -16,13 +16,13 @@ public class WishlistController {
     private final WishlistService wishlistService;
     private final PersonService personService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> addToWishlist(@RequestParam Integer bookId, @RequestParam Boolean wasRead){
         wishlistService.addToWishList(personService.getLoggedInUser(), bookId, wasRead);
         return ResponseEntity.ok("Successfully added to wishlist");
     }
 
-    @DeleteMapping()
+    @DeleteMapping
     public ResponseEntity<?> removeFromWishlist(@RequestParam Integer bookId){
         try {
             wishlistService.removeFromWishList(personService.getLoggedInUser().getId(), bookId);

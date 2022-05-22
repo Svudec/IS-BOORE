@@ -5,6 +5,7 @@ import hr.unizg.fer.is.boore.boore.Book.BookDTO;
 import hr.unizg.fer.is.boore.boore.Book.BookRepository;
 import hr.unizg.fer.is.boore.boore.Genre.Genre;
 import hr.unizg.fer.is.boore.boore.Person.Person;
+import hr.unizg.fer.is.boore.boore.Review.Review;
 import hr.unizg.fer.is.boore.boore.User.User;
 import hr.unizg.fer.is.boore.boore.Wishlist.Wishlist;
 import hr.unizg.fer.is.boore.boore.Wishlist.service.WishlistService;
@@ -58,5 +59,14 @@ public class BookServiceImpl implements BookService{
     @Transactional
     public List<Book> getRecommendations(Person user) {
         return bookRepository.getRecommendations(user.getId());
+    }
+
+    @Override
+    @Transactional
+    public void calculateRatingForBook(Book book) {
+        double newRating = book.getReviews().stream().mapToDouble(Review::getRating)
+                .average().orElse(0.0);
+        book.setRating(newRating);
+        bookRepository.save(book);
     }
 }

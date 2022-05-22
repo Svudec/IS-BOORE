@@ -16,4 +16,5 @@ public interface BookService {
     List<Book> findByAuthor(Person author);
     List<Book> getRecommendations(Genre genre, Person user);
     List<Book> getRecommendations(Person user);
+    void calculateRatingForBook(Book book);
 }
