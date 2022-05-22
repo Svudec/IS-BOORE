@@ -5,21 +5,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import ApiService from "../services/ApiService";
-import { USER_RECOMMENDATIONS } from "../services/Routes";
 import React, { useEffect, useState } from "react";
 
 function BookList(props) {
-    const [books, setBooks] = useState([]);
-
-    useEffect(() => { getBooks(); }, []);
-
-    const getBooks = () => {
-        ApiService.getAPI(USER_RECOMMENDATIONS).then(result => {
-            setBooks(result.data);
-            console.log(result.data)
-        });
-    };
+    
     return (
         <TableContainer component={Paper}>
             <Table sx={{ width: 900 }} aria-label="book table" align="center">

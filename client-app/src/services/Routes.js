@@ -9,8 +9,7 @@ export const CITY_LOV = host + '/city/lov';
 export const GENRE_LOV = host + '/genre/lov';
 
 export const USER_PROFILE = (userId) => host + `/user${userId ? '/' + userId : ''}`;
-export const USER_RECOMMENDATIONS = USER_PROFILE() + '/recommendations';
-export const USER_RECOMMENDATIONS_GENRE = (genreId) => USER_RECOMMENDATIONS + `/?genreId=${genreId}`;
+export const USER_RECOMMENDATIONS = (genreId) => USER_PROFILE() + `/recommendations${genreId ? '?genreId=' + genreId : ''}`;
 
 export const WISHLIST = (bookId, wasRead) => host + `/wishlist?bookId=${bookId}${wasRead != null ? '&wasRead=' + wasRead : ''}`;
 
