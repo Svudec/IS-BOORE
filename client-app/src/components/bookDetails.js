@@ -52,7 +52,7 @@ export const BookDetails = (props) => {
                         <Typography variant="subtitle1" sx={{ mb: 1.5 }} color="text.secondary">
                             {book?.rating}
                         </Typography>
-                        <Grid container columnGap={3}>
+                        <Grid container columnGap={3} rowGap={2}>
                             {book?.soldInBookstores?.map(store => <Chip key={store.id} icon={<LocalLibraryIcon />} label={store.name} />)}
                         </Grid>
                     </Grid>
