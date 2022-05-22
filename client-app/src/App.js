@@ -8,17 +8,13 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import AuthService from "./services/AuthService";
 
 function App(props) {
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [loggedInUser, setLoggedInUser] = React.useState(null);
 
   const location = useLocation();
@@ -43,7 +39,7 @@ function App(props) {
     setLoggedInUser(user)
   };
 
-  const pages = ["Page1", "Page2"];
+  const pages = ["Home", "Profile"];
 
   const handleLogout = () => {
     AuthService.logout();
@@ -54,16 +50,9 @@ function App(props) {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   return (
@@ -126,7 +115,6 @@ function App(props) {
                   ))}
                 </Menu>
               </Box>
-              <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
               <Typography
                 variant="h5"
                 noWrap
@@ -156,34 +144,13 @@ function App(props) {
                   </Button>
                 ))}
               </Box>
-
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, color: '#ffffff' }}>
-                    <AccountCircleIcon fontSize="large" />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: '45px' }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
+              
+              <Button 
+                sx={{ p: 0, my: 2, color: 'white', display: 'block' }}
+                onClick={handleLogout}
                 >
-                  <MenuItem onClick={handleLogout}>
-                    <Typography textAlign="center">Sign out</Typography>
-                  </MenuItem>
-                </Menu>
-              </Box>
+                Sign out
+              </Button>
             </Toolbar>
           </Container>
         </AppBar>
