@@ -8,6 +8,8 @@ import hr.unizg.fer.is.boore.boore.Genre.Genre;
 import hr.unizg.fer.is.boore.boore.Person.Person;
 import hr.unizg.fer.is.boore.boore.Person.PersonRepository;
 import hr.unizg.fer.is.boore.boore.Person.dto.UserProfileDTO;
+import hr.unizg.fer.is.boore.boore.Review.ReviewDTO;
+import hr.unizg.fer.is.boore.boore.Review.service.ReviewService;
 import hr.unizg.fer.is.boore.boore.User.User;
 import hr.unizg.fer.is.boore.boore.Wishlist.service.WishlistService;
 import lombok.AllArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +32,6 @@ public class PersonServiceImpl implements PersonService{
     private final ModelMapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final BookService bookService;
-    private final WishlistService wishlistService;
 
     @Override
     @Transactional
@@ -75,13 +77,19 @@ public class PersonServiceImpl implements PersonService{
     @Override
     public List<BookDTO> getRecommendations() {
         return bookService.getRecommendations(getLoggedInUser()).stream()
-                .map(book -> mapper.map(book, BookDTO.class)).collect(Collectors.toList());
+                .map(book -> {
+                    book.setReviews(null);
+                    return mapper.map(book, BookDTO.class);
+                }).collect(Collectors.toList());
     }
 
     @Override
     public List<BookDTO> getRecommendations(Genre genre) {
         return bookService.getRecommendations(genre, getLoggedInUser()).stream()
-                .map(book -> mapper.map(book, BookDTO.class)).collect(Collectors.toList());
+                .map(book -> {
+                    book.setReviews(null);
+                    return mapper.map(book, BookDTO.class);
+                }).collect(Collectors.toList());
     }
 
     @Override
@@ -89,11 +97,24 @@ public class PersonServiceImpl implements PersonService{
         Person loggedInUser = getLoggedInUser();
         UserProfileDTO res = mapper.map(loggedInUser, UserProfileDTO.class);
 
-        res.setHasRead(wishlistService.getAllBooksForUser(loggedInUser, true)
-                .stream().map(book -> mapper.map(book, BookDTO.class)).collect(Collectors.toList()));
+        List<BookDTO> hasRead = new ArrayList<>();
+        List<BookDTO> wantsToRead = new ArrayList<>();
 
-        res.setWantsToRead(wishlistService.getAllBooksForUser(loggedInUser, false)
-                .stream().map(book -> mapper.map(book, BookDTO.class)).collect(Collectors.toList()));
+        loggedInUser.getBooksInWishlist()
+                .forEach(wishlist -> {
+                    BookDTO dto = mapper.map(wishlist.getBook(), BookDTO.class);
+                    dto.setReviews(null);
+                    if(wishlist.getWasRead()){
+                        hasRead.add(dto);
+                    } else {
+                        wantsToRead.add(dto);
+                    }
+                });
+        res.setHasRead(hasRead);
+        res.setWantsToRead(wantsToRead);
+
+        res.setReviews(loggedInUser.getReviews()
+                .stream().map(review -> mapper.map(review, ReviewDTO.class)).collect(Collectors.toList()));
         return res;
     }
 }

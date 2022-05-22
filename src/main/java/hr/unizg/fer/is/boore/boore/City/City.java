@@ -1,10 +1,13 @@
 package hr.unizg.fer.is.boore.boore.City;
 
+import hr.unizg.fer.is.boore.boore.Bookstore.Bookstore;
 import hr.unizg.fer.is.boore.boore.Country.Country;
+import hr.unizg.fer.is.boore.boore.Person.Person;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,6 +25,12 @@ public class City {
 
     @Column(name = "naziv", nullable = false)
     private String name;
+
+    @OneToMany(mappedBy = "city")
+    private Set<Bookstore> bookstores;
+
+    @OneToMany(mappedBy = "city")
+    private Set<Person> users;
 
     @Override
     public String toString() {

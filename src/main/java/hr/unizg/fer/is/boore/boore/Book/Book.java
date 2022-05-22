@@ -4,10 +4,13 @@ import hr.unizg.fer.is.boore.boore.Bookstore.Bookstore;
 import hr.unizg.fer.is.boore.boore.Genre.Genre;
 import hr.unizg.fer.is.boore.boore.Language.Language;
 import hr.unizg.fer.is.boore.boore.Person.Person;
+import hr.unizg.fer.is.boore.boore.Review.Review;
+import hr.unizg.fer.is.boore.boore.Wishlist.Wishlist;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -44,4 +47,23 @@ public class Book {
 
     @ManyToMany(mappedBy = "books")
     private Set<Bookstore> soldInBookstores;
+
+    @OneToMany(mappedBy = "book")
+    private Set<Wishlist> usersWhichAddedToWishlist;
+
+    @OneToMany(mappedBy = "book")
+    private Set<Review> reviews;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book)) return false;
+        Book book = (Book) o;
+        return Objects.equals(id, book.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

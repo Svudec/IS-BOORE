@@ -2,6 +2,8 @@ package hr.unizg.fer.is.boore.boore.Person;
 
 import hr.unizg.fer.is.boore.boore.Book.Book;
 import hr.unizg.fer.is.boore.boore.City.City;
+import hr.unizg.fer.is.boore.boore.Review.Review;
+import hr.unizg.fer.is.boore.boore.Wishlist.Wishlist;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -55,4 +57,9 @@ public class Person {
     )
     private Set<Book> booksWritten;
 
+    @OneToMany(mappedBy = "person")
+    private Set<Wishlist> booksInWishlist;
+
+    @OneToMany(mappedBy = "person")
+    private Set<Review> reviews;
 }

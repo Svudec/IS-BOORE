@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface WishlistService {
     List<Book> getAllBooksForUser(Person user, boolean wasRead);
+    void addToWishList(Person user, int bookId, boolean wasRead);
 }

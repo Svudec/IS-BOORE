@@ -1,9 +1,11 @@
 package hr.unizg.fer.is.boore.boore.Country;
 
+import hr.unizg.fer.is.boore.boore.City.City;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,4 +20,6 @@ public class Country {
     @Column(name = "naziv", nullable = false)
     private String name;
 
+    @OneToMany(mappedBy = "country")
+    private Set<City> cities;
 }

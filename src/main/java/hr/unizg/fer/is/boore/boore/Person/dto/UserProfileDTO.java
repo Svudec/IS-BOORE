@@ -2,6 +2,7 @@ package hr.unizg.fer.is.boore.boore.Person.dto;
 
 import hr.unizg.fer.is.boore.boore.Book.BookDTO;
 import hr.unizg.fer.is.boore.boore.City.City;
+import hr.unizg.fer.is.boore.boore.Review.ReviewDTO;
 import lombok.Data;
 
 import java.util.List;
@@ -18,4 +19,5 @@ public class UserProfileDTO {
     private String biography;
     private List<BookDTO> wantsToRead;
     private List<BookDTO> hasRead;
+    private List<ReviewDTO> reviews;
 }

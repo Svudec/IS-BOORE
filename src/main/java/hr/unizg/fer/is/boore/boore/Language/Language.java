@@ -1,9 +1,11 @@
 package hr.unizg.fer.is.boore.boore.Language;
 
+import hr.unizg.fer.is.boore.boore.Book.Book;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,6 +22,9 @@ public class Language {
 
     @Column(name = "oznaka", length = 2)
     private String label;
+
+    @OneToMany(mappedBy = "language")
+    private Set<Book> books;
 
     @Override
     public String toString() {
