@@ -42,17 +42,8 @@ public class ReviewServiceImpl implements ReviewService{
         } catch (NumberFormatException e){
             throw new IllegalArgumentException("Book with that id not found");
         }
-        try {
-            id.setIdPerson(Integer.parseInt(dto.getPerson()));
-
-        } catch (NumberFormatException e){
-            throw new IllegalArgumentException("Person with that id not found");
-        }
-
         Person loggedInUser = personService.getLoggedInUser();
-        if(!Objects.equals(id.getIdPerson(), loggedInUser.getId())){
-            throw new IllegalArgumentException("User Id is not logged in user!");
-        }
+        id.setIdPerson(loggedInUser.getId());
 
         Review review;
         if(reviewRepository.existsById(id)){
