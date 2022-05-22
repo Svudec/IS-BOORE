@@ -1,4 +1,5 @@
-const host = 'http://localhost:8080';
+//const host = 'http://localhost:8080';
+const host = 'https://is2022-boore.herokuapp.com';
 
 
 export const LOGIN = host + '/login';
