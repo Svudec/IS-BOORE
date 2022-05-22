@@ -34,7 +34,7 @@ export const GenreSelect = (props) => {
                 fullWidth={props.fullWidth}
                 variant="standard"
             >
-                <MenuItem value={-1}>None</MenuItem>
+                <MenuItem value={-1}>All</MenuItem>
                 {genres.map(item => (
                     <MenuItem
                         key={item.id}
