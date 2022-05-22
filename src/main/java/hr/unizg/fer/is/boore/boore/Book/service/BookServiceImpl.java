@@ -60,6 +60,11 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
+    public List<Book> searchByTitle(String searchString) {
+        return bookRepository.findAllByTitleLike("%" + searchString + "%");
+    }
+
+    @Override
     @Transactional
     public List<Book> getRecommendations(Genre genre, Person user) {
         return bookRepository.getRecommendations(user.getId(), genre.getId());

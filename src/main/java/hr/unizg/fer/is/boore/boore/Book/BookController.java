@@ -6,6 +6,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/book")
@@ -23,5 +26,11 @@ public class BookController {
         } catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchBooks(@RequestParam String title){
+        List<BookDTO> res = bookService.searchByTitle(title).stream().map(book -> mapper.map(book, BookDTO.class)).collect(Collectors.toList());
+        return ResponseEntity.ok(res);
     }
 }
