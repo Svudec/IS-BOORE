@@ -12,6 +12,7 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
+    @Query(nativeQuery = true, value = "SELECT * FROM knjiga k WHERE k.naziv ILIKE ?1")
     List<Book> findAllByTitleLike(String searchString);
 
     List<Book> findAllByAuthorsContains(Person author);
