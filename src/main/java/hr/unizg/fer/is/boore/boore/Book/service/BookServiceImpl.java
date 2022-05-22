@@ -24,11 +24,21 @@ import java.util.stream.Stream;
 public class BookServiceImpl implements BookService{
 
     private final BookRepository bookRepository;
-    private final ModelMapper mapper;
 
     @Override
     public Book getById(int id) {
         return bookRepository.getById(id);
+    }
+
+    @Override
+    public Book getById(String id) {
+        int bookId;
+        try {
+            bookId = Integer.parseInt(id);
+        } catch (NumberFormatException e){
+            throw new IllegalArgumentException("Book id wrong format");
+        }
+        return getById(bookId);
     }
 
     @Override

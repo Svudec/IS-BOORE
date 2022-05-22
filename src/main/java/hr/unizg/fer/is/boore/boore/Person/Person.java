@@ -62,4 +62,9 @@ public class Person {
 
     @OneToMany(mappedBy = "person")
     private Set<Review> reviews;
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }

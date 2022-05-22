@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface BookService {
     Book getById(int id);
+    Book getById(String id);
     List<Book> getAll();
     List<Book> findByTitle(String title);
     List<Book> findByAuthor(Person author);
