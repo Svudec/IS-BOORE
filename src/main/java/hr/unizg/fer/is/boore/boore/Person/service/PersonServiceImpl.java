@@ -94,13 +94,28 @@ public class PersonServiceImpl implements PersonService{
 
     @Override
     public UserProfileDTO getUserProfile() {
-        Person loggedInUser = getLoggedInUser();
-        UserProfileDTO res = mapper.map(loggedInUser, UserProfileDTO.class);
+        return getUserProfile(getLoggedInUser());
+    }
+
+    @Override
+    public UserProfileDTO getUserProfile(String userId) {
+        int id;
+        try {
+            id = Integer.parseInt(userId);
+        } catch (NumberFormatException e){
+            throw new IllegalArgumentException("User id is wrong format");
+        }
+        return getUserProfile(personRepository.getById(id));
+    }
+
+    @Override
+    public UserProfileDTO getUserProfile(Person person) {
+        UserProfileDTO res = mapper.map(person, UserProfileDTO.class);
 
         List<BookDTO> hasRead = new ArrayList<>();
         List<BookDTO> wantsToRead = new ArrayList<>();
 
-        loggedInUser.getBooksInWishlist()
+        person.getBooksInWishlist()
                 .forEach(wishlist -> {
                     BookDTO dto = mapper.map(wishlist.getBook(), BookDTO.class);
                     dto.setReviews(null);
@@ -113,7 +128,7 @@ public class PersonServiceImpl implements PersonService{
         res.setHasRead(hasRead);
         res.setWantsToRead(wantsToRead);
 
-        res.setReviews(loggedInUser.getReviews()
+        res.setReviews(person.getReviews()
                 .stream().map(review -> mapper.map(review, ReviewDTO.class)).collect(Collectors.toList()));
         return res;
     }

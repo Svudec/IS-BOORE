@@ -19,9 +19,18 @@ public class PersonController {
     private final PersonService personService;
     private final GenreService genreService;
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<?> getUserProfile(){
         return ResponseEntity.ok(personService.getUserProfile());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUser(@PathVariable String id){
+        try {
+            return ResponseEntity.ok(personService.getUserProfile(id));
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/recommendations")

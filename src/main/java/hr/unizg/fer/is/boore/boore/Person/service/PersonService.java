@@ -28,4 +28,8 @@ public interface PersonService {
     List<BookDTO> getRecommendations(Genre genre);
 
     UserProfileDTO getUserProfile();
+
+    UserProfileDTO getUserProfile(String userId);
+
+    UserProfileDTO getUserProfile(Person person);
 }
