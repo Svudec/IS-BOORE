@@ -40,7 +40,7 @@ function App(props) {
     setLoggedInUser(user)
   };
 
-  const pages = ["Home", "Profile"];
+  const pages = [{label: "Home", url: '/'}, {label: "Profile", url: '/user'}];
 
   const handleLogout = () => {
     AuthService.logout();
@@ -52,12 +52,13 @@ function App(props) {
     setAnchorElNav(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (pageUrl) => {
     setAnchorElNav(null);
+    navigate(pageUrl);
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{backgroundColor: 'rgb(231, 235, 240)'}}>
       {loggedInUser &&
         <AppBar position="static">
           <Container maxWidth="xl">
@@ -110,8 +111,8 @@ function App(props) {
                   }}
                 >
                   {pages.map((page) => (
-                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                      <Typography textAlign="center">{page}</Typography>
+                    <MenuItem key={page.url} onClick={() => handleCloseNavMenu(page.url)}>
+                      <Typography textAlign="center">{page.label}</Typography>
                     </MenuItem>
                   ))}
                 </Menu>
@@ -120,7 +121,7 @@ function App(props) {
                 variant="h5"
                 noWrap
                 component="a"
-                href=""
+                href="/"
                 sx={{
                   mr: 2,
                   display: { xs: 'flex', md: 'none' },
@@ -137,11 +138,11 @@ function App(props) {
               <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                 {pages.map((page) => (
                   <Button
-                    key={page}
-                    onClick={handleCloseNavMenu}
+                    key={page.url}
+                    onClick={() => handleCloseNavMenu(page.url)}
                     sx={{ my: 2, color: 'white', display: 'block' }}
                   >
-                    {page}
+                    {page.label}
                   </Button>
                 ))}
               </Box>

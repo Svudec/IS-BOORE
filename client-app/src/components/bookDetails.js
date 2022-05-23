@@ -4,10 +4,12 @@ import React, { useEffect, useState } from "react";
 import ApiService from "../services/ApiService";
 import { BOOK } from "../services/Routes";
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
+import { useNavigate } from "react-router-dom";
 
 export const BookDetails = (props) => {
 
     const [book, setBook] = useState({});
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (props.bookId) {
@@ -63,7 +65,7 @@ export const BookDetails = (props) => {
                 </Typography>
             </CardContent>
             <CardActions sx={{justifyContent: 'center' }}>
-                <Button>Learn More</Button>
+                <Button onClick={() => navigate('/book/' + book?.id)}>Learn More</Button>
             </CardActions>
         </Card>
     </>
