@@ -66,6 +66,7 @@ export const ReviewForm = (props) => {
                     sx={{marginBottom: 3, marginTop: 3}}
                 />
                 <TextField
+                    name="text"
                     type="text"
                     label='Text'
                     placeholder="Enter text"
