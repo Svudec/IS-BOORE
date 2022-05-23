@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, Grid, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Button, Card, CardContent, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ApiService from "../services/ApiService";
@@ -7,17 +7,19 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import BookList from "../components/booklist";
 import ReviewList from "../components/reviewList";
 import { ReviewForm } from "../components/reviewForm";
+import AddIcon from '@mui/icons-material/Add';
 
 export const UserProfile = () => {
 
     const [user, setUser] = useState(null);
     const [reviewForForm, setReviewForForm] = useState(null);
+    const [refreshFromBackend, setRefreshFromBackend] = useState(false);
     const { userId } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         ApiService.getAPI(USER_PROFILE(userId)).then(res => { setUser(res.data); console.log(res.data) });
-    }, [userId]);
+    }, [userId, refreshFromBackend]);
 
     const handleBookDetails = (bookId) => navigate('/book/' + bookId);
 
@@ -42,6 +44,8 @@ export const UserProfile = () => {
     }
 
     const handleEditingStart = (bookId) => setReviewForForm(user.reviews?.find(rev => rev.id.idBook === bookId))
+
+    const handleEditingEnd = () => { setReviewForForm(null); setRefreshFromBackend(!refreshFromBackend); }
 
 
     return <>
@@ -135,14 +139,20 @@ export const UserProfile = () => {
             <AccordionDetails>
                 {reviewForForm ?
                     <>
-                        <ReviewForm review={reviewForForm} />
+                        <ReviewForm review={reviewForForm} onSave={handleEditingEnd} />
                     </>
                     :
-                    <ReviewList
-                        reviews={user?.reviews}
-                        onDelete={handleReviewDelete}
-                        onEdit={handleEditingStart}
-                    />}
+                    <>
+                        <Button variant="contained" startIcon={<AddIcon />} onClick={() => setReviewForForm({})}>
+                            ADD
+                        </Button>
+                        <ReviewList
+                            reviews={user?.reviews}
+                            onDelete={handleReviewDelete}
+                            onEdit={handleEditingStart}
+                        />
+                    </>
+                }
             </AccordionDetails>
         </Accordion>
     </>;

@@ -13,7 +13,7 @@ export const ReviewForm = (props) => {
     const [review, setReview] = useState(null);
 
     useEffect(() => {
-        if (!props.review) {
+        if (!props.review?.book) {
             setReview({
                 book: -1,
                 text: '',
@@ -52,10 +52,10 @@ export const ReviewForm = (props) => {
                     </h2>
                 </Grid>
                 <BookSelect
-                disabled={Boolean(props.review)}
+                disabled={props.review?.id?.idBook ? true : false}
                 onChange={newVal => handleChange('book', newVal)}
                 fullWidth
-                defaultValue={review?.id?.idBook}
+                defaultValue={props.review?.id?.idBook}
                 />
                 <Rating
                     value={review ? review.rating : 0}
