@@ -7,6 +7,7 @@ export const REGISTER = host + '/register';
 
 export const CITY_LOV = host + '/city/lov';
 export const GENRE_LOV = host + '/genre/lov';
+export const BOOK_LOV = host + '/book/lov';
 
 export const USER_PROFILE = (userId) => host + `/user${userId ? '/' + userId : ''}`;
 export const USER_RECOMMENDATIONS = (genreId) => USER_PROFILE() + `/recommendations${genreId ? '?genreId=' + genreId : ''}`;

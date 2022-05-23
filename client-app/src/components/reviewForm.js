@@ -1,29 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Rating, Grid, Paper, TextField } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import ApiService from "../services/ApiService";
 import { REVIEW } from "../services/Routes";
+import { BookSelect } from "./bookSelect";
 
 
 export const ReviewForm = (props) => {
 
     const paperStyle = { padding: 20, width: 280, margin: "20px auto" }
     const btnStyle = { margin: '12px 0' }
-    const [rating, setRating] = React.useState(0);
-    const [text, setText] = useState('');
+    const [review, setReview] = useState(null);
+
+    useEffect(() => {
+        if (!props.review) {
+            setReview({
+                book: -1,
+                text: '',
+                rating: 0
+            })
+        } else {
+            setReview({
+                book: props.review.id.idBook,
+                text: props.review.text,
+                rating: props.review.rating
+            })
+        }
+    }, [props.review])
+
+    const handleChange = (propertieName, value) => {
+        let temp = { ...review };
+        temp[propertieName] = value;
+        setReview(temp);
+    }
 
 
     const handleSubmitReview = () => {
-        if (rating) {
-            let reviewObj = {
-                book: props.bookId,
-                text: text,
-                rating: rating
-            };
-
-            ApiService.postAPI(REVIEW(), reviewObj);
-            console.log("Review poslan.")
-        }
+        if (review.rating) {
+            ApiService.postAPI(REVIEW(), review).then(() => {
+                props.onSave && props.onSave();
+            });
+        };
     };
 
     return (
@@ -34,11 +51,19 @@ export const ReviewForm = (props) => {
                         Write your review
                     </h2>
                 </Grid>
+                <BookSelect
+                disabled={Boolean(props.review)}
+                onChange={newVal => handleChange('book', newVal)}
+                fullWidth
+                defaultValue={review?.id?.idBook}
+                />
                 <Rating
-                    value={rating}
-                    onChange={(e, value) => setRating(value)}
+                    value={review ? review.rating : 0}
+                    onChange={(e, value) => handleChange('rating', value)}
                     precision={1}
                     required
+                    size="large"
+                    sx={{marginBottom: 3, marginTop: 3}}
                 />
                 <TextField
                     type="text"
@@ -49,8 +74,8 @@ export const ReviewForm = (props) => {
                     multiline
                     rows={4}
                     variant="standard"
-                    value={text}
-                    onChange={e => setText(e.target.value)}
+                    value={review?.text}
+                    onChange={e => handleChange('text', e.target.value)}
                 />
                 <Button
                     variant="contained"

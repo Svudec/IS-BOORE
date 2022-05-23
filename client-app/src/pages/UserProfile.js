@@ -6,10 +6,12 @@ import { USER_PROFILE } from "../services/Routes";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import BookList from "../components/booklist";
 import ReviewList from "../components/reviewList";
+import { ReviewForm } from "../components/reviewForm";
 
 export const UserProfile = () => {
 
     const [user, setUser] = useState(null);
+    const [reviewForForm, setReviewForForm] = useState(null);
     const { userId } = useParams();
     const navigate = useNavigate();
 
@@ -21,18 +23,25 @@ export const UserProfile = () => {
 
     const handleBookRemovePast = (bookId) => {
         user.hasRead = user.hasRead?.filter(book => book.id !== bookId);
-        setUser({...user});
+        setUser({ ...user });
     }
     const handleBookRemoveFuture = (bookId) => {
         user.wantsToRead = user.wantsToRead?.filter(book => book.id !== bookId);
-        setUser({...user});
+        setUser({ ...user });
     }
     const handleBookDone = (bookId) => {
         let bk = user.wantsToRead?.find(b => b.id === bookId);
         user.wantsToRead = user.wantsToRead?.filter(book => book.id !== bookId);
         user.hasRead?.push(bk);
-        setUser({...user});
+        setUser({ ...user });
     }
+
+    const handleReviewDelete = (bookId) => {
+        user.reviews = user?.reviews?.filter(rev => rev.id.idBook !== bookId);
+        setUser({ ...user });
+    }
+
+    const handleEditingStart = (bookId) => setReviewForForm(user.reviews?.find(rev => rev.id.idBook === bookId))
 
 
     return <>
@@ -82,7 +91,7 @@ export const UserProfile = () => {
                 </Typography>
             </CardContent>
         </Card>
-        <Accordion>
+        <Accordion defaultExpanded>
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
@@ -94,37 +103,46 @@ export const UserProfile = () => {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <Typography variant='h6'>Past Readings</Typography>
-                        <BookList 
-                        books={user?.hasRead} 
-                        onBookClick={handleBookDetails} 
-                        hasDelete
-                        onBookDelete={handleBookRemovePast}
+                        <BookList
+                            books={user?.hasRead}
+                            onBookClick={handleBookDetails}
+                            hasDelete
+                            onBookDelete={handleBookRemovePast}
                         />
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant='h6'>Wish List</Typography>
-                        <BookList 
-                        books={user?.wantsToRead} 
-                        onBookClick={handleBookDetails} 
-                        hasDelete
-                        onBookDelete={handleBookRemoveFuture}
-                        hasDone
-                        onBookDone={handleBookDone}
+                        <BookList
+                            books={user?.wantsToRead}
+                            onBookClick={handleBookDetails}
+                            hasDelete
+                            onBookDelete={handleBookRemoveFuture}
+                            hasDone
+                            onBookDone={handleBookDone}
                         />
                     </Grid>
                 </Grid>
             </AccordionDetails>
         </Accordion>
-        <Accordion>
+        <Accordion onChange={(e, expanded) => setReviewForForm(null)}>
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel2a-content"
                 id="panel2a-header"
             >
-                <Typography variant="h5">My Reviews</Typography>
+                <Typography variant="h5">{reviewForForm ? 'Review Form' : 'My Reviews'}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-                <ReviewList reviews={user?.reviews} />
+                {reviewForForm ?
+                    <>
+                        <ReviewForm review={reviewForForm} />
+                    </>
+                    :
+                    <ReviewList
+                        reviews={user?.reviews}
+                        onDelete={handleReviewDelete}
+                        onEdit={handleEditingStart}
+                    />}
             </AccordionDetails>
         </Accordion>
     </>;

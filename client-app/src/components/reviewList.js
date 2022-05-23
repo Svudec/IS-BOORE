@@ -6,8 +6,23 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import React from "react";
+import { Grid, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import ApiService from '../services/ApiService';
+import { REVIEW } from '../services/Routes';
+
 
 function ReviewList(props) {
+
+    const handleDelete = (bookId) => {
+        ApiService.deleteAPI(REVIEW(bookId));
+        props.onDelete && props.onDelete(bookId);
+    }
+
+    const handleEdit = (bookId) => {
+        props.onEdit && props.onEdit(bookId);
+    }
     
     return (
         <TableContainer component={Paper}>
@@ -16,6 +31,7 @@ function ReviewList(props) {
                     <TableRow>
                         <TableCell>Title</TableCell>
                         <TableCell>Rating</TableCell>
+                        <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -26,6 +42,20 @@ function ReviewList(props) {
                         >
                             <TableCell component="th" scope="row">{review.book}</TableCell>
                             <TableCell align="left">{review.rating}</TableCell>
+                            <TableCell>
+                                <Grid container>
+                                        <Grid item xs={6}>
+                                            <IconButton aria-label="more details" onClick={() => handleEdit(review.id.idBook)}>
+                                                <EditIcon />
+                                            </IconButton>
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <IconButton aria-label="more details" onClick={() => handleDelete(review.id.idBook)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Grid>
+                                </Grid>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
