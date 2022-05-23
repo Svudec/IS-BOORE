@@ -34,7 +34,7 @@ function ReviewList(props) {
                         <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody data-cy='reviewListTableBody'>
                     {props.reviews?.map((review) => (
                         <TableRow
                             key={review.id.idBook + review.id.idPerson}
@@ -50,7 +50,7 @@ function ReviewList(props) {
                                             </IconButton>
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <IconButton aria-label="more details" onClick={() => handleDelete(review.id.idBook)}>
+                                            <IconButton aria-label="more details" onClick={() => handleDelete(review.id.idBook)} data-cy='deleteReviewButton'>
                                                 <DeleteIcon />
                                             </IconButton>
                                         </Grid>

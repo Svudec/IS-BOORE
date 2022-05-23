@@ -24,5 +24,26 @@ describe('Test 2', () => {
       cy.get('[name="text"]').type('The book was great!')
 
       cy.contains('SUBMIT').click()
+
+      cy.get("[data-cy='reviewListTableBody']").children().should('have.length', 1);
     })
+
+    it('Delete submitted review', () => {
+      cy.visit('/login')
+    
+      cy.get('form').within(() => {
+        cy.get('[name="username"]').type('testuser')
+        cy.get('[name="password"]').type('test')
+      })
+
+      cy.contains('SIGN IN').click()
+
+      cy.contains('Profile').click()
+
+      cy.contains('My Reviews').click()
+
+      cy.get("[data-cy='deleteReviewButton']").click();
+
+      cy.get("[data-cy='reviewListTableBody']").children().should('have.length', 0);
+    });
   })

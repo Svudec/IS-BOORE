@@ -1,6 +1,6 @@
 describe('Test 1', () => {
     it('Clicks the link "Sign up"', () => {
-      cy.visit('/')
+      cy.visit('/login')
   
       cy.url().should('include', '/login')
 
