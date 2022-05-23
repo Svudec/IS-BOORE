@@ -15,18 +15,16 @@ function ReviewList(props) {
                 <TableHead>
                     <TableRow>
                         <TableCell>Title</TableCell>
-                        <TableCell>User</TableCell>
                         <TableCell>Rating</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.reviews.map((review) => (
+                    {props.reviews?.map((review) => (
                         <TableRow
                             key={review.id.idBook + review.id.idPerson}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">{review.book}</TableCell>
-                            <TableCell align="left">{review.person}</TableCell>
                             <TableCell align="left">{review.rating}</TableCell>
                         </TableRow>
                     ))}

@@ -8,6 +8,7 @@ import Login from './components/login';
 import Signup from './components/signup';
 import Homepage from './pages/Homepage';
 import { BookProfile } from './pages/BookProfile';
+import { UserProfile } from './pages/UserProfile';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -20,6 +21,9 @@ root.render(
           <Route path='login' element={<Login />} />
           <Route path='register' element={<Signup />} />
           <Route path='book/:bookId' element={<BookProfile />} />
+          <Route path='user' element={<UserProfile />}>
+            <Route path=':userId' element={<UserProfile />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

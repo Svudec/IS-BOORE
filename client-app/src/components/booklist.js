@@ -6,8 +6,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import React, { useEffect, useState } from "react";
-import { IconButton } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ApiService from '../services/ApiService';
+import { WISHLIST } from '../services/Routes';
+import DeleteIcon from '@mui/icons-material/Delete';
+import BeenhereIcon from '@mui/icons-material/Beenhere';
 
 function BookList(props) {
 
@@ -15,20 +19,31 @@ function BookList(props) {
         props.onBookClick && props.onBookClick(bookId);
     }
 
+    const handleBookDelete = (bookId) => {
+        ApiService.deleteAPI(WISHLIST(bookId));
+        props.onBookDelete && props.onBookDelete(bookId);
+    }
+
+    const handleBookDone = (bookId) => {
+        ApiService.postAPI(WISHLIST(bookId, true));
+        props.onBookDone && props.onBookDone(bookId);
+    }
+
+
     return (<>
-        <TableContainer sx={{maxHeight: 'inherit'}} component={Paper}>
+        <TableContainer sx={{ maxHeight: 'inherit' }} component={Paper}>
             <Table aria-label="book table" align="center">
                 <TableHead>
                     <TableRow>
                         <TableCell>Title</TableCell>
                         <TableCell>Author</TableCell>
-                        <TableCell>Year published</TableCell>
+                        {!props.hasDelete && <TableCell>Year published</TableCell>}
                         <TableCell>Rating</TableCell>
                         <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.books.map((book) => (
+                    {props.books?.map((book) => (
                         <TableRow
                             key={book.id}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -37,12 +52,31 @@ function BookList(props) {
                             <TableCell align="left">
                                 {book.authors.map(autor => autor.firstName).join(', ')}
                             </TableCell>
-                            <TableCell align="left">{book.yearOfIssue}</TableCell>
+                            {!props.hasDelete && <TableCell align="left">{book.yearOfIssue}</TableCell>}
                             <TableCell align="left">{book.rating.toFixed(2)}</TableCell>
                             <TableCell>
-                                <IconButton aria-label="more details" size='large' onClick={() => handleArrowClick(book.id)}>
-                                    <ArrowForwardIosIcon />
-                                </IconButton>
+                                <Grid container>
+                                    {props.hasDone &&
+                                        <Grid item xs={4}>
+                                            <IconButton aria-label="more details" onClick={() => handleBookDone(book.id)}>
+                                                <BeenhereIcon />
+                                            </IconButton>
+                                        </Grid>
+                                    }
+                                    {props.hasDelete &&
+                                        <Grid item xs={props.hasDone ? 4 : 6}>
+                                            <IconButton aria-label="more details" onClick={() => handleBookDelete(book.id)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Grid>
+                                    }
+                                    <Grid item xs={props.hasDone ? 4 : props.hasDelete ? 6 : true}>
+                                        <IconButton aria-label="more details" onClick={() => handleArrowClick(book.id)}>
+                                            <ArrowForwardIosIcon />
+                                        </IconButton>
+                                    </Grid>
+
+                                </Grid>
                             </TableCell>
                         </TableRow>
                     ))}

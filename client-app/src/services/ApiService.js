@@ -22,5 +22,9 @@ class UserService {
     putAPI(url, body){
         return axios.put(url, body, {headers: authHeader()});
     }
+
+    deleteAPI(url){
+        return axios.delete(url, {headers: authHeader()});
+    }
   }
   export default new UserService();
