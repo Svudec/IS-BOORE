@@ -1,6 +1,7 @@
 package hr.unizg.fer.is.boore.boore.Book;
 
 import hr.unizg.fer.is.boore.boore.Book.service.BookService;
+import hr.unizg.fer.is.boore.boore.common.dto.lovDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -33,4 +34,11 @@ public class BookController {
         List<BookDTO> res = bookService.searchByTitle(title).stream().map(book -> mapper.map(book, BookDTO.class)).collect(Collectors.toList());
         return ResponseEntity.ok(res);
     }
+
+    @GetMapping("/lov")
+    public ResponseEntity<?> getBooksLov(){
+        List<lovDTO> res = bookService.getAll().stream().map(book -> new lovDTO(book.getId(), book.getTitle())).collect(Collectors.toList());
+        return ResponseEntity.ok(res);
+    }
+
 }
