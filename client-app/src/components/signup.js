@@ -1,16 +1,17 @@
 import { Button, Grid, Link, Paper, TextField, Typography, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import AuthService from "../services/AuthService";
 import ApiService from "../services/ApiService";
 import { CITY_LOV } from "../services/Routes";
 import React, { useEffect, useState } from "react";
 
-function Signup() {
+function Signup(props) {
     const paperStyle = { padding: 20, width: 280, margin: "20px auto" };
     const btnStyle = { margin: '12px 0' };
 
     const navigate = useNavigate();
+    const sendErrorNotification = useOutletContext();
 
     const [cities, setCities] = useState([]);
 
@@ -34,7 +35,9 @@ function Signup() {
             cityId: ''
         },
         onSubmit: (values, formikHelpers) => {
-            AuthService.register(values).then(() => navigate('/', { state: { refreshUser: true } }));
+            AuthService.register(values)
+            .then(() => navigate('/', { state: { refreshUser: true } }))
+            .catch(e => {console.log(e); sendErrorNotification && sendErrorNotification(e.response.data)});
         }
     })
 

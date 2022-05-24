@@ -12,11 +12,15 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AuthService from "./services/AuthService";
 import { ReviewForm } from "./components/reviewForm";
+import { Alert, Snackbar } from "@mui/material";
 
 function App(props) {
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [loggedInUser, setLoggedInUser] = React.useState(null);
+
+  const [snackBarOpened, setSnackBarOpened] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -30,6 +34,14 @@ function App(props) {
 
   React.useEffect(() => { refreshAuthenticatedUser(); }, []);
 
+  React.useEffect(() => {
+    if (snackbarMessage !== '') {
+      setSnackBarOpened(true);
+    } else {
+      setSnackBarOpened(false);
+    }
+  }, [snackbarMessage]);
+
   const refreshAuthenticatedUser = () => {
     let user = AuthService.getCurrentUser();
     //console.log(user)
@@ -40,7 +52,7 @@ function App(props) {
     setLoggedInUser(user)
   };
 
-  const pages = [{label: "Home", url: '/'}, {label: "Profile", url: '/user'}];
+  const pages = [{ label: "Home", url: '/' }, { label: "Profile", url: '/user' }];
 
   const handleLogout = () => {
     AuthService.logout();
@@ -57,8 +69,24 @@ function App(props) {
     navigate(pageUrl);
   };
 
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarMessage('');
+  }
+
+  const openErrorSnackbar = (message) => {
+    setSnackbarMessage(message);
+  }
+
   return (
-    <div className="container" style={{backgroundColor: 'rgb(231, 235, 240)'}}>
+    <div className="container" style={{ backgroundColor: 'rgb(231, 235, 240)', minHeight: '100vh'}}>
+      <Snackbar open={snackBarOpened} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity='error' sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
       {loggedInUser &&
         <AppBar position="static">
           <Container maxWidth="xl">
@@ -146,11 +174,11 @@ function App(props) {
                   </Button>
                 ))}
               </Box>
-              
-              <Button 
+
+              <Button
                 sx={{ p: 0, my: 2, color: 'white', display: 'block' }}
                 onClick={handleLogout}
-                >
+              >
                 Sign out
               </Button>
             </Toolbar>
@@ -158,7 +186,7 @@ function App(props) {
         </AppBar>
       }
 
-      <Outlet />
+      <Outlet context={openErrorSnackbar}/>
     </div>
   );
 }

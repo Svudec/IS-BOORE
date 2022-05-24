@@ -1,23 +1,36 @@
-import { Avatar, Button, FormControl, Grid, Link, Paper, Typography } from "@mui/material";
+import { Avatar, Button, FormControl, Grid, Link, Paper, TextField, Typography } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import React, { useState } from "react";
 import AuthService from "../services/AuthService";
-import { Field, Form, Formik } from "formik";
-import { TextField } from "formik-mui";
+import { Field, Form, Formik, useFormik } from "formik";
 
 
 function Login(props) {
-    const paperStyle = { padding: 20, width: 280, margin: "20px auto" }
+    const paperStyle = { padding: 20, width: 280, margin: "auto" }
     const avatarStyle = { backgroundColor: '#16a6a1' }
     const btnStyle = { margin: '12px 0' }
 
     const navigate = useNavigate();
+    const sendErrorNotification = useOutletContext();
 
-    const handleLogin = (values, formikHelpers) => {
-        console.log(values)
-        AuthService.login(values).then(() => navigate('/', { state: { refreshUser: true } }));
-    };
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+            password: ''
+        },
+        onSubmit: (values, formikHelpers) => {
+            AuthService.login(values)
+                .then(() => navigate('/', { state: { refreshUser: true } }))
+                .catch(e => {
+                    if (e.response.status === 401) {
+                        sendErrorNotification("Invalid username or password!");
+                    } else {
+                        sendErrorNotification("Something went wrong!")
+                    }
+                });
+        }
+    })
 
     return (
         <Grid>
@@ -31,53 +44,45 @@ function Login(props) {
                         Sign in
                     </h2>
                 </Grid>
-                <Formik
-                    initialValues={{
-                        username: '',
-                        password: ''
-                    }}
-                    onSubmit={handleLogin}
-                >
-                    {({ submitForm }) => (
-                        <Form>
-                            <Field
-                                type="text"
-                                name="username"
-                                component={TextField}
-                                label='Username'
-                                placeholder="Enter username"
-                                fullWidth
-                                required
-                                variant="standard"
-                            />
-                            <Field
-                                type="password"
-                                label="Password"
-                                name="password"
-                                component={TextField}
-                                placeholder="Enter password"
-                                fullWidth
-                                required
-                                variant="standard"
-                            />
-                            <Button
-                                variant="contained"
-                                fullWidth
-                                style={btnStyle}
-                                onClick={submitForm}>
-                                SIGN IN
-                            </Button>
-                            <Typography>
-                                Not a member?&nbsp;
-                                <Link href="/register">
-                                    Sign up
-                                </Link>
-                            </Typography>
-                        </Form>
-                    )}
-                </Formik>
+                <form onSubmit={formik.handleSubmit}>
+                    <TextField
+                        type="text"
+                        name="username"
+                        label='Username'
+                        placeholder="Enter username"
+                        fullWidth
+                        required
+                        variant="standard"
+                        value={formik.values.username}
+                        onChange={formik.handleChange}
+                    />
+                    <TextField
+                        type="password"
+                        label="Password"
+                        name="password"
+                        placeholder="Enter password"
+                        fullWidth
+                        required
+                        variant="standard"
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                    />
+                    <Button
+                        variant="contained"
+                        fullWidth
+                        style={btnStyle}
+                        type='submit' >
+                        SIGN IN
+                    </Button>
+                </form>
+                <Typography>
+                    Not a member?&nbsp;
+                    <Link href="/register">
+                        Sign up
+                    </Link>
+                </Typography>
             </Paper>
-        </Grid>
+        </Grid >
     );
 }
 
