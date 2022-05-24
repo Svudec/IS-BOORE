@@ -81,7 +81,7 @@ function App(props) {
   }
 
   return (
-    <div className="container" style={{ backgroundColor: 'rgb(231, 235, 240)', minHeight: '100vh'}}>
+    <div className="container" style={{ backgroundColor: 'rgb(231, 235, 240)', minHeight: '100vh', paddingBottom: '30px'}}>
       <Snackbar open={snackBarOpened} autoHideDuration={6000} onClose={handleCloseSnackbar}>
         <Alert onClose={handleCloseSnackbar} severity='error' sx={{ width: '100%' }}>
           {snackbarMessage}
