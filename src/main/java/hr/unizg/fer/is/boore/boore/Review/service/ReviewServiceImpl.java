@@ -8,6 +8,7 @@ import hr.unizg.fer.is.boore.boore.Review.Review;
 import hr.unizg.fer.is.boore.boore.Review.ReviewDTO;
 import hr.unizg.fer.is.boore.boore.Review.ReviewId;
 import hr.unizg.fer.is.boore.boore.Review.ReviewRepository;
+import hr.unizg.fer.is.boore.boore.Wishlist.service.WishlistService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ public class ReviewServiceImpl implements ReviewService{
     private final ReviewRepository reviewRepository;
     private final PersonService personService;
     private final BookService bookService;
+    private final WishlistService wishlistService;
 
     @Override
     public boolean exists(int userId, int bookId) {
@@ -61,6 +63,7 @@ public class ReviewServiceImpl implements ReviewService{
         review.setRating(dto.getRating());
         review.setText(dto.getText());
         reviewRepository.save(review);
+        wishlistService.addToWishList(loggedInUser, id.getIdBook(), true);
         bookService.calculateRatingForBook(review.getBook());
     }
 
