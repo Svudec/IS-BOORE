@@ -4,6 +4,7 @@ import { Field, Form, Formik } from "formik";
 import ApiService from "../services/ApiService";
 import { REVIEW } from "../services/Routes";
 import { BookSelect } from "./bookSelect";
+import AuthService from "../services/AuthService";
 
 
 export const ReviewForm = (props) => {
@@ -13,10 +14,11 @@ export const ReviewForm = (props) => {
     const [review, setReview] = useState(null);
 
     useEffect(() => {
+        let user = AuthService.getCurrentUser();
         if (!props.review?.book) {
             setReview({
                 book: -1,
-                person: 0,
+                person: user?.id,
                 text: '',
                 rating: 0
             })
@@ -24,7 +26,8 @@ export const ReviewForm = (props) => {
             setReview({
                 book: props.review.id.idBook,
                 text: props.review.text,
-                rating: props.review.rating
+                rating: props.review.rating,
+                person: user?.id
             })
         }
     }, [props.review])
