@@ -16,6 +16,7 @@ export const ReviewForm = (props) => {
         if (!props.review?.book) {
             setReview({
                 book: -1,
+                person: 0,
                 text: '',
                 rating: 0
             })

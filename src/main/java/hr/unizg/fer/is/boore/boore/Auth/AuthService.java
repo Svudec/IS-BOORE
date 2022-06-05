@@ -33,7 +33,10 @@ public class AuthService {
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        return new JwtAuthenticationResponse(tokenProvider.generateToken(auth), person.getFirstName() + " " + person.getLastName(), person.getIsModerator() ? "MODERATOR" : "USER");
+        return new JwtAuthenticationResponse(tokenProvider.generateToken(auth),
+                person.getFirstName() + " " + person.getLastName(),
+                person.getIsModerator() ? "MODERATOR" : "USER",
+                person.getId());
     }
 
     public JwtAuthenticationResponse registerUser(RegistrationDTO dto){
