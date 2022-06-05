@@ -20,4 +20,5 @@ public class UserProfileDTO {
     private List<BookDTO> wantsToRead;
     private List<BookDTO> hasRead;
     private List<ReviewDTO> reviews;
+    private boolean canLeaveReview;
 }

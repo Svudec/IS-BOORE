@@ -143,13 +143,15 @@ export const UserProfile = () => {
                     </>
                     :
                     <>
-                        <Button variant="contained" startIcon={<AddIcon />} onClick={() => setReviewForForm({})}>
-                            ADD
-                        </Button>
+                        {user?.canLeaveReview &&
+                            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setReviewForForm({})}>
+                                ADD
+                            </Button>}
                         <ReviewList
                             reviews={user?.reviews}
                             onDelete={handleReviewDelete}
                             onEdit={handleEditingStart}
+                            disableEdit={!user?.canLeaveReview}
                         />
                     </>
                 }

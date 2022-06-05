@@ -141,6 +141,7 @@ public class PersonServiceImpl implements PersonService{
 
         res.setReviews(person.getReviews()
                 .stream().map(review -> mapper.map(review, ReviewDTO.class)).collect(Collectors.toList()));
+        res.setCanLeaveReview(canLeaveReviews(person.getId()));
         return res;
     }
 
@@ -166,7 +167,7 @@ public class PersonServiceImpl implements PersonService{
     public boolean canLeaveReviews(int personId) {
         Person person = getById(personId);
 
-        return person.getDeclinedReviewsCount() >= 3;
+        return person.getDeclinedReviewsCount() < 3;
     }
 
 }

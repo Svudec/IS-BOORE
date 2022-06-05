@@ -44,11 +44,11 @@ function ReviewList(props) {
                             <TableCell align="left">{review.rating}</TableCell>
                             <TableCell>
                                 <Grid container>
-                                        <Grid item xs={6}>
+                                        {!props.disableEdit && <Grid item xs={6}>
                                             <IconButton aria-label="more details" onClick={() => handleEdit(review.id.idBook)}>
                                                 <EditIcon />
                                             </IconButton>
-                                        </Grid>
+                                        </Grid>}
                                         <Grid item xs={6}>
                                             <IconButton aria-label="more details" onClick={() => handleDelete(review.id.idBook)} data-cy='deleteReviewButton'>
                                                 <DeleteIcon />
