@@ -50,6 +50,9 @@ public class Person {
     @Column(name = "biografija")
     private String biography;
 
+    @Column(name = "je_moderator", nullable = false)
+    private Boolean isModerator = false;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(name = "knjiga_pisac",
             joinColumns = { @JoinColumn(name = "id_osoba")},

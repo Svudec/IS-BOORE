@@ -20,14 +20,16 @@ public class User implements UserDetails {
     private String firstName;
     private String lastName;
 
+    private boolean isModerator;
+
     public static User build(Person person){
-        return new User(person.getId(), person.getUsername(), person.getPassword(), person.getFirstName(), person.getLastName());
+        return new User(person.getId(), person.getUsername(), person.getPassword(), person.getFirstName(), person.getLastName(), person.getIsModerator());
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(Roles.ROLE_USER.name()));
+        authorities.add(new SimpleGrantedAuthority(isModerator ? Roles.ROLE_MODERATOR.name() : Roles.ROLE_USER.name()));
 
         return authorities;
     }
