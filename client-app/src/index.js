@@ -9,6 +9,7 @@ import Signup from './components/signup';
 import Homepage from './pages/Homepage';
 import { BookProfile } from './pages/BookProfile';
 import { UserProfile } from './pages/UserProfile';
+import Moderator from './pages/Moderator';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -20,6 +21,7 @@ root.render(
           <Route index element={<Homepage />} />
           <Route path='login' element={<Login />} />
           <Route path='register' element={<Signup />} />
+          <Route path='moderator' element={<Moderator />} />
           <Route path='book/:bookId' element={<BookProfile />} />
           <Route path='user' element={<UserProfile />}>
             <Route path=':userId' element={<UserProfile />} />

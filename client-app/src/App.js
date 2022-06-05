@@ -52,7 +52,7 @@ function App(props) {
     setLoggedInUser(user)
   };
 
-  const pages = [{ label: "Home", url: '/' }, { label: "Profile", url: '/user' }];
+  const pages = loggedInUser?.role === 'USER' ? [{ label: "Home", url: '/' }, { label: "Profile", url: '/user' }] : [];
 
   const handleLogout = () => {
     AuthService.logout();
@@ -95,7 +95,7 @@ function App(props) {
                 variant="h6"
                 noWrap
                 component="a"
-                href="/"
+                href={loggedInUser?.role === 'MODERATOR' ? '/moderator' : "/"}
                 sx={{
                   mr: 2,
                   display: { xs: 'none', md: 'flex' },

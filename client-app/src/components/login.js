@@ -21,7 +21,7 @@ function Login(props) {
         },
         onSubmit: (values, formikHelpers) => {
             AuthService.login(values)
-                .then(() => navigate('/', { state: { refreshUser: true } }))
+                .then((res) => res?.role === 'MODERATOR' ? navigate('/moderator', { state: { refreshUser: true } }) : navigate('/', { state: { refreshUser: true } }))
                 .catch(e => {
                     if (e.response.status === 401) {
                         sendErrorNotification("Invalid username or password!");
