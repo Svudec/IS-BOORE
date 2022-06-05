@@ -17,7 +17,7 @@ public class CamundaRestSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .antMatcher("/engine-rest/**")
+                .antMatcher("/engine-restNE/**")
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
                 .csrf().disable()
@@ -32,7 +32,7 @@ public class CamundaRestSecurityConfig extends WebSecurityConfigurerAdapter {
         FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
         filterRegistration.setFilter(new StatelessUserAuthenticationFilter());
         filterRegistration.setOrder(102); // make sure the filter is registered after the Spring Security Filter Chain
-        filterRegistration.addUrlPatterns("/engine-rest/*");
+        filterRegistration.addUrlPatterns("/engine-restNE/*");
         return filterRegistration;
     }
 }
