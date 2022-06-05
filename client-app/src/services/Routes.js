@@ -22,3 +22,12 @@ export const BOOK_SEARCH = (searchString) => host + '/book/search?title=' + sear
 
 export const AUTHOR = (authorId) => host + `/author/${authorId}`;
 
+export const CAMUNDA = host + '/engine-rest';
+
+export const START_REVIEW_ASSESSMENT = CAMUNDA + '/process-definition/key/ReviewAssessment/start';
+
+export const CAMUNDA_GET_TASK_FOR_PROCESS = (processId) => CAMUNDA + `/task?processInstanceId=${processId}`;
+
+export const CAMUNDA_COMPLETE_TASK = (taskId) => CAMUNDA + `/task/${taskId}/complete`;
+
+export const COMPLETE_REVIEW_ASSESSMENT = CAMUNDA + '/message'
