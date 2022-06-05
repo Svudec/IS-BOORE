@@ -30,7 +30,7 @@ public class AppConfig {
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/engine-rest/**", configuration);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }
