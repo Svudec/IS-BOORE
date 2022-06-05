@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Rating, Grid, Paper, TextField } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import ApiService from "../services/ApiService";
-import { REVIEW } from "../services/Routes";
+import { REVIEW, START_REVIEW_ASSESSMENT } from "../services/Routes";
 import { BookSelect } from "./bookSelect";
 import AuthService from "../services/AuthService";
 
@@ -41,7 +41,9 @@ export const ReviewForm = (props) => {
 
     const handleSubmitReview = () => {
         if (review.rating) {
-            ApiService.postAPI(REVIEW(), review).then(() => {
+            let postData = { variables: {} };
+            Object.keys(review).forEach(key => postData.variables.key = { value: review[key] });
+            ApiService.postAPI(START_REVIEW_ASSESSMENT, postData).then(() => {
                 props.onSave && props.onSave();
             });
         };
@@ -56,10 +58,10 @@ export const ReviewForm = (props) => {
                     </h2>
                 </Grid>
                 <BookSelect
-                disabled={props.review?.id?.idBook ? true : false}
-                onChange={newVal => handleChange('book', newVal)}
-                fullWidth
-                defaultValue={props.review?.id?.idBook}
+                    disabled={props.review?.id?.idBook ? true : false}
+                    onChange={newVal => handleChange('book', newVal)}
+                    fullWidth
+                    defaultValue={props.review?.id?.idBook}
                 />
                 <Rating
                     value={review ? review.rating : 0}
@@ -67,7 +69,7 @@ export const ReviewForm = (props) => {
                     precision={1}
                     required
                     size="large"
-                    sx={{marginBottom: 3, marginTop: 3}}
+                    sx={{ marginBottom: 3, marginTop: 3 }}
                 />
                 <TextField
                     name="text"
