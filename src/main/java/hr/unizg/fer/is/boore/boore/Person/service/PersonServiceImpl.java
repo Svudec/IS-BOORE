@@ -13,6 +13,7 @@ import hr.unizg.fer.is.boore.boore.Review.service.ReviewService;
 import hr.unizg.fer.is.boore.boore.User.User;
 import hr.unizg.fer.is.boore.boore.Wishlist.service.WishlistService;
 import lombok.AllArgsConstructor;
+import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -154,6 +155,12 @@ public class PersonServiceImpl implements PersonService{
     }
 
     @Override
+    public void resetDeclinedReviewsCount(DelegateExecution execution) {
+        String personId = (String) execution.getVariable("userId");
+        resetDeclinedReviewsCount(Integer.parseInt(personId));
+    }
+
+    @Override
     @Transactional
     public void increaseDeclinedReviewsCount(int personId) {
         Person person = getById(personId);
@@ -161,6 +168,12 @@ public class PersonServiceImpl implements PersonService{
         declinedCount += 1;
         person.setDeclinedReviewsCount(declinedCount);
         personRepository.save(person);
+    }
+
+    @Override
+    public void increaseDeclinedReviewsCount(DelegateExecution execution) {
+        String personId = (String) execution.getVariable("userId");
+        increaseDeclinedReviewsCount(Integer.parseInt(personId));
     }
 
     @Override

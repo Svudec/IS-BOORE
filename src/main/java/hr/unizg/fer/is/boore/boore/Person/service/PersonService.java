@@ -5,6 +5,7 @@ import hr.unizg.fer.is.boore.boore.Book.BookDTO;
 import hr.unizg.fer.is.boore.boore.Genre.Genre;
 import hr.unizg.fer.is.boore.boore.Person.Person;
 import hr.unizg.fer.is.boore.boore.Person.dto.UserProfileDTO;
+import org.camunda.bpm.engine.delegate.DelegateExecution;
 
 import java.util.List;
 
@@ -34,8 +35,10 @@ public interface PersonService {
     UserProfileDTO getUserProfile(Person person);
 
     void resetDeclinedReviewsCount(int personId);
+    void resetDeclinedReviewsCount(DelegateExecution execution);
 
     void increaseDeclinedReviewsCount(int personId);
+    void increaseDeclinedReviewsCount(DelegateExecution execution);
 
     boolean canLeaveReviews(int personId);
 }

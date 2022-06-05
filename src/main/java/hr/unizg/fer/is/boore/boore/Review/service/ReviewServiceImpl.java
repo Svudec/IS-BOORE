@@ -10,6 +10,7 @@ import hr.unizg.fer.is.boore.boore.Review.ReviewId;
 import hr.unizg.fer.is.boore.boore.Review.ReviewRepository;
 import hr.unizg.fer.is.boore.boore.Wishlist.service.WishlistService;
 import lombok.AllArgsConstructor;
+import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,12 +41,11 @@ public class ReviewServiceImpl implements ReviewService{
         ReviewId id = new ReviewId();
         try {
             id.setIdBook(Integer.parseInt(dto.getBook()));
-
+            id.setIdPerson(Integer.parseInt(dto.getPerson()));
         } catch (NumberFormatException e){
             throw new IllegalArgumentException("Book with that id not found");
         }
-        Person loggedInUser = personService.getLoggedInUser();
-        id.setIdPerson(loggedInUser.getId());
+        Person user = personService.getById(dto.getPerson());
 
         Review review;
         if(reviewRepository.existsById(id)){
@@ -55,7 +55,7 @@ public class ReviewServiceImpl implements ReviewService{
 
             review = new Review();
             review.setId(id);
-            review.setPerson(loggedInUser);
+            review.setPerson(user);
             review.setBook(book);
             book.getReviews().add(review);
         }
@@ -63,8 +63,24 @@ public class ReviewServiceImpl implements ReviewService{
         review.setRating(dto.getRating());
         review.setText(dto.getText());
         reviewRepository.save(review);
-        wishlistService.addToWishList(loggedInUser, id.getIdBook(), true);
+        wishlistService.addToWishList(user, id.getIdBook(), true);
         bookService.calculateRatingForBook(review.getBook());
+    }
+
+    @Override
+    public void createOrEdit(DelegateExecution execution) {
+        String personId = (String) execution.getVariable("userId");
+        String bookId = (String) execution.getVariable("bookId");
+        String text = (String) execution.getVariable("text");
+        Integer rating = (Integer) execution.getVariable("rating");
+
+        ReviewDTO dto = new ReviewDTO();
+        dto.setBook(bookId);
+        dto.setPerson(personId);
+        dto.setRating(rating);
+        dto.setText(text);
+
+        createOrEdit(dto);
     }
 
     @Override
