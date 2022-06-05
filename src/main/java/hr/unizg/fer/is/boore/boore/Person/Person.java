@@ -53,6 +53,9 @@ public class Person {
     @Column(name = "je_moderator", nullable = false)
     private Boolean isModerator = false;
 
+    @Column(name = "odbijeno_recenzija", nullable = false)
+    private Integer declinedReviewsCount;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(name = "knjiga_pisac",
             joinColumns = { @JoinColumn(name = "id_osoba")},

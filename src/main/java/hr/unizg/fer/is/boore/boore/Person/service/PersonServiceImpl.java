@@ -143,4 +143,30 @@ public class PersonServiceImpl implements PersonService{
                 .stream().map(review -> mapper.map(review, ReviewDTO.class)).collect(Collectors.toList()));
         return res;
     }
+
+    @Override
+    @Transactional
+    public void resetDeclinedReviewsCount(int personId) {
+        Person person = getById(personId);
+        person.setDeclinedReviewsCount(0);
+        personRepository.save(person);
+    }
+
+    @Override
+    @Transactional
+    public void increaseDeclinedReviewsCount(int personId) {
+        Person person = getById(personId);
+        int declinedCount = person.getDeclinedReviewsCount();
+        declinedCount += 1;
+        person.setDeclinedReviewsCount(declinedCount);
+        personRepository.save(person);
+    }
+
+    @Override
+    public boolean canLeaveReviews(int personId) {
+        Person person = getById(personId);
+
+        return person.getDeclinedReviewsCount() >= 3;
+    }
+
 }
