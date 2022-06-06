@@ -23,6 +23,7 @@ public class AppConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+<<<<<<< HEAD
 
     @Bean
     public FilterRegistrationBean processCorsFilter() {
@@ -38,4 +39,6 @@ public class AppConfig {
         bean.setOrder(0);
         return bean;
     }
+=======
+>>>>>>> 6233c778c1e9c08ed4ed13f04234c31e404dd852
 }
