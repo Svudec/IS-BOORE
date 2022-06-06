@@ -30,4 +30,8 @@ export const CAMUNDA_GET_TASK_FOR_PROCESS = (processId) => CAMUNDA + `/task?proc
 
 export const CAMUNDA_COMPLETE_TASK = (taskId) => CAMUNDA + `/task/${taskId}/complete`;
 
-export const COMPLETE_REVIEW_ASSESSMENT = CAMUNDA + '/message'
+export const COMPLETE_REVIEW_ASSESSMENT = CAMUNDA + '/message';
+
+export const GET_ACTIVE_PROCESSES = CAMUNDA + `/process-instance?processDefinitionKey=ReviewAssessment&active=true&variables=status_eq_AVAILABLE,`;
+
+export const CAMUNDA_GET_VARIABLES = (processId) => CAMUNDA + `/process-instance/${processId}/variables`;

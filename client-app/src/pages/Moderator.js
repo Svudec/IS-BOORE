@@ -3,6 +3,8 @@ import * as React from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import CancelIcon from '@mui/icons-material/Cancel';
 import AssignmentReturnedIcon from '@mui/icons-material/AssignmentReturned';
+import axios from 'axios';
+import { CAMUNDA_COMPLETE_TASK, CAMUNDA_GET_TASK_FOR_PROCESS, CAMUNDA_GET_VARIABLES, COMPLETE_REVIEW_ASSESSMENT, GET_ACTIVE_PROCESSES } from '../services/Routes';
 
 const Moderator = () => {
 
@@ -10,83 +12,69 @@ const Moderator = () => {
 
     React.useEffect(() => { getReviewsForModeration(); }, []);
 
-    const getReviewsForModeration = () => {
-        // ApiService.getAPI(USER_RECOMMENDATIONS(genreId)).then(result => {
-        //     setReviews(result.data);
-        // });
-        setReviews([
-            {
-                "id": {
-                    "idBook": 8,
-                    "idPerson": 53
-                },
-                "book": "It",
-                "person": "Jarrod Rodriguez",
-                "text": "vulputate, nisi sem semper erat, in consectetuer ipsum nunc id enim. Curabitur massa. Vestibulum accumsan neque et nunc. Quisque ornare tortor at risus. Nunc ac sem ut dolor dapibus gravida. Aliquam tincidunt, nunc ac mattis ornare, lectus ante dictum mi, ac mattis velit justo nec ante. Maecenas mi felis, adipiscing fringilla, porttitor vulputate, posuere vulputate, lacus. Cras interdum. Nunc sollicitudin commodo ipsum. Suspendisse non leo. Vivamus nibh dolor, nonummy ac, feugiat non, lobortis quis, pede. Suspendisse dui. Fusce diam nunc, ullamcorper eu, euismod ac, fermentum vel, mauris. Integer sem elit, pharetra ut, pharetra",
-                "rating": 3,
-                "status": 'AVAILABLE'
-            },
-            {
-                "id": {
-                    "idBook": 8,
-                    "idPerson": 51
-                },
-                "book": "It",
-                "person": "Vielka Deleon",
-                "text": "Donec porttitor tellus non magna. Nam ligula elit, pretium et, rutrum non, hendrerit id, ante. Nunc mauris sapien, cursus in, hendrerit consectetuer, cursus et, magna. Praesent interdum ligula eu enim. Etiam imperdiet dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est ac facilisis facilisis, magna tellus faucibus leo, in lobortis tellus justo sit amet nulla. Donec non justo. Proin non massa non ante bibendum ullamcorper. Duis cursus, diam at pretium aliquet, metus urna convallis erat, eget tincidunt dui augue eu tellus. Phasellus elit pede, malesuada vel, venenatis vel, faucibus id, libero. Donec consectetuer",
-                "rating": 3,
-                "status": 'AVAILABLE'
-            },
-            {
-                "id": {
-                    "idBook": 8,
-                    "idPerson": 56
-                },
-                "book": "It",
-                "person": "Karlo Sudec",
-                "text": "Novi",
-                "rating": 5,
-                "status": 'TAKEN'
-            },
-            {
-                "id": {
-                    "idBook": 8,
-                    "idPerson": 37
-                },
-                "book": "It",
-                "person": "Nora Rivera",
-                "text": "ligula consectetuer rhoncus. Nullam velit dui, semper et, lacinia vitae, sodales at, velit. Pellentesque ultricies dignissim lacus. Aliquam rutrum lorem ac risus. Morbi metus. Vivamus euismod urna. Nullam lobortis quam a felis ullamcorper viverra. Maecenas iaculis aliquet diam. Sed diam lorem, auctor quis, tristique ac, eleifend vitae, erat. Vivamus nisi. Mauris nulla. Integer urna. Vivamus molestie dapibus ligula. Aliquam erat volutpat.",
-                "rating": 2,
-                "status": 'TAKEN'
-            },
-            {
-                "id": {
-                    "idBook": 8,
-                    "idPerson": 30
-                },
-                "book": "It",
-                "person": "Reece Blankenship",
-                "text": "sed, sapien. Nunc pulvinar arcu et pede. Nunc sed orci lobortis augue scelerisque mollis. Phasellus libero mauris, aliquam eu, accumsan sed, facilisis vitae, orci. Phasellus dapibus quam quis diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce aliquet magna a neque. Nullam ut",
-                "rating": 2,
-                "status": 'TAKEN'
-            },
-            {
-                "id": {
-                    "idBook": 8,
-                    "idPerson": 35
-                },
-                "book": "It",
-                "person": "Leonard Mercado",
-                "text": "nisi magna sed dui. Fusce aliquam, enim nec tempus scelerisque, lorem ipsum sodales purus,",
-                "rating": 3,
-                "status": 'TAKEN'
-            }
-        ]);
+    const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS'
     };
+
+    const getReviewsForModeration = async () => {
+
+        let revs = [];
+
+        const res = await axios.get(GET_ACTIVE_PROCESSES, { headers: headers });
+        console.log(res);
+        setReviews(res.data.map(procs => { return { id: procs.id } }));
+        console.log(res.data.map(procs => { return { id: procs.id } }))
+
+    };
+
+    const handleTake = async (procId) => {
+        let itemIndx = reviews.findIndex(proc => proc.id === procId);
+
+        let res = await axios.get(CAMUNDA_GET_VARIABLES(procId), { headers: headers })
+
+        console.log(res)
+        reviews[itemIndx].person = res.data.person.value;
+        reviews[itemIndx].book = res.data.book.value;
+        reviews[itemIndx].personName = res.data.personName.value;
+        reviews[itemIndx].bookTitle = res.data.bookTitle.value;
+        reviews[itemIndx].text = res.data.text.value;
+        reviews[itemIndx].rating = res.data.rating.value;
+        reviews[itemIndx].status = 'TAKEN';
+
+        let resl = await axios.get(CAMUNDA_GET_TASK_FOR_PROCESS(procId), { headers: headers })
+        reviews[itemIndx].taskId = resl.data[0].id;
+        console.log(resl.data[0].id)
+        setReviews([...reviews]);
+
+        axios.post(CAMUNDA_COMPLETE_TASK(resl.data[0].id), {
+            variables: {
+                moderator: { value: reviews[itemIndx].person },
+                status: {value: "TAKEN"}
+            }
+        }, { headers: headers });
+    }
+
+    const handleDecision = (processId, appropriate) => {
+
+        let itemIndx = reviews.findIndex(proc => proc.id === processId);
+
+        axios.post(COMPLETE_REVIEW_ASSESSMENT, {
+            "processVariables": {
+                "appropriate": { "value": appropriate }
+            },
+            "messageName": "moderatorAssessedMessage",
+            "processInstanceId": processId
+        }, { headers: headers }).then(() => {
+            reviews.splice(itemIndx, 1);
+            setReviews([...reviews])
+        })
+    }
 
     return (
         <div style={{ padding: '20px' }}>
-            {reviews?.map(review => <div key={review.id.idPerson}>
+            {reviews?.map(review => <div key={review.id}>
                 <Grid container>
                     <Grid item xs={2}>
                         <Typography variant="subtitle1" sx={{ mb: 1.5 }} color="text.secondary">
@@ -101,10 +89,10 @@ const Moderator = () => {
                     </Grid>
                     <Grid item xs={10}>
                         <Typography variant="subtitle1" sx={{ mb: 1.5 }} color="text.secondary">
-                            {review.person}
+                            {review.personName}
                         </Typography>
                         <Typography variant="subtitle1" sx={{ mb: 1.5 }} color="text.secondary">
-                            {review.book}
+                            {review.bookTitle}
                         </Typography>
                         <Typography variant="subtitle1" sx={{ mb: 1.5 }} color="text.secondary">
                             {review.rating}
@@ -118,23 +106,21 @@ const Moderator = () => {
                 <Grid container justifyContent={review.status === 'AVAILABLE' ? 'flex-start' : 'flex-end'} style={{ gap: '40px', marginTop: '10px' }}>
                     {review.status === 'TAKEN' && <>
                         <Grid item>
-                            <IconButton aria-label="more details" onClick={() => { }} size='large'>
+                            <IconButton aria-label="more details" onClick={() => {handleDecision(review.id, true)}} size='large'>
                                 <CheckIcon htmlColor='green' />
                             </IconButton>
                         </Grid>
                         <Grid item>
-                            <IconButton aria-label="more details" onClick={() => { }} size='large'>
+                            <IconButton aria-label="more details" onClick={() => {handleDecision(review.id, false) }} size='large'>
                                 <CancelIcon htmlColor='red' />
                             </IconButton>
                         </Grid>
                     </>}
-                    {review.status === 'AVAILABLE' &&
-                        <Grid item>
-                            <Button variant="contained" endIcon={<AssignmentReturnedIcon />}>
-                                Take
-                            </Button>
-                        </Grid>
-                    }
+                    {review.status !== 'TAKEN' && <Grid item>
+                        <Button variant="contained" endIcon={<AssignmentReturnedIcon />} onClick={() => handleTake(review.id)}>
+                            Take
+                        </Button>
+                    </Grid>}
                 </Grid>
                 <Divider sx={{ marginTop: 1, marginBottom: 5 }} />
             </div>

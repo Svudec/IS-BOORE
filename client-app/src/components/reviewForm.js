@@ -5,6 +5,7 @@ import ApiService from "../services/ApiService";
 import { REVIEW, START_REVIEW_ASSESSMENT } from "../services/Routes";
 import { BookSelect } from "./bookSelect";
 import AuthService from "../services/AuthService";
+import axios from "axios";
 
 
 export const ReviewForm = (props) => {
@@ -18,16 +19,20 @@ export const ReviewForm = (props) => {
         if (!props.review?.book) {
             setReview({
                 book: -1,
+                bookTitle: '',
                 person: user?.id,
+                personName: user?.name,
                 text: '',
                 rating: 0
             })
         } else {
             setReview({
                 book: props.review.id.idBook,
+                bookTitle: props.review.book,
                 text: props.review.text,
                 rating: props.review.rating,
-                person: user?.id
+                person: user?.id,
+                personName: user?.name,
             })
         }
     }, [props.review])
@@ -38,12 +43,18 @@ export const ReviewForm = (props) => {
         setReview(temp);
     }
 
+    const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS'
+    }
 
     const handleSubmitReview = () => {
         if (review.rating) {
             let postData = { variables: {} };
-            Object.keys(review).forEach(key => postData.variables.key = { value: review[key] });
-            ApiService.postAPI(START_REVIEW_ASSESSMENT, postData).then(() => {
+            Object.keys(review).forEach(key => { postData.variables[key] = { value: review[key] } });
+            postData.variables['status'] = {value: 'AVAILABLE'}
+            axios.post(START_REVIEW_ASSESSMENT, postData, {headers: headers}).then(() => {
                 props.onSave && props.onSave();
             });
         };
